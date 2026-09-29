@@ -1,0 +1,39 @@
+name: Verify editions
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  display:
+    name: Display server (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/display-server.test.mjs
+      - run: npm ci
+        working-directory: RhineLabWallpaper
+      - run: npm run check:content
+        working-directory: RhineLabWallpaper
+      - run: npm run build:wallpaper
+        working-directory: RhineLabWallpaper
+        env:
+          RHINE_EDITION: display
+  local:
+    name: Mac consent and bridge
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test mac/*.test.mjs

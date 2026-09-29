@@ -1,6 +1,7 @@
 import { mountMusicControl } from './music-control';
 import { performanceMarkup, recordFrame, performancePlugin } from "./mac-performance";
-const macPreview = new URLSearchParams(location.search).get("mac") === "1";
+import { modernUI, localEdition, desktopConnected, mountConnections } from "./release-access";
+const macPreview = modernUI;
 import { mountMarkerControl } from './index-marker';
 import './index-marker.css';
 import { tr, language, setLanguage, localeEvent, bindStaticTranslations } from "./i18n";
@@ -170,7 +171,7 @@ function readLocal<T>(key: string, fallback: T): T {
     return fallback;
   }
 }
-const savedKey = macPreview ? 'rhine-desktop-saved-v1' : 'rhine-saved';
+const savedKey = desktopConnected ? 'rhine-desktop-saved-v1' : 'rhine-saved';
 const saved = new Set<string>(readLocal<string[]>(savedKey, []));
 const storedPrefs = readLocal<Partial<{ sound: boolean; music: boolean; soundVolume: number; musicVolume: number; reduced: boolean; quality: boolean; rendering: RenderQuality; colorTheme: "light" | "dark" }>>("rhine-settings", {});
 const prefs = {
@@ -509,7 +510,7 @@ function updateSelection(navigation?: ArchiveNavigation) {
   });
   columnTitle.update({ text: archiveColumns[lane], animated: !prefs.reduced && mode === "archive" });
   $('#column-total').textContent = String(archiveColumns.length).padStart(2, '0');
-  if (macPreview && fileTicks.length !== files.length) {
+  if (desktopConnected && fileTicks.length !== files.length) {
     $("#file-ticks").replaceChildren(...files.map(index => { const button = document.createElement('button'); button.dataset.select = String(index); return button; }));
     fileTicks = [...$("#file-ticks").querySelectorAll<HTMLButtonElement>('button')];
   }
@@ -572,7 +573,7 @@ function renderDetail(preserveReveal = false) {
   tabTransition.cancel();
   const r = records[selected];
   desktopPreview?.destroy(); desktopPreview = undefined;
-  if (macPreview) {
+  if (desktopConnected) {
     $('#detail-content').classList.add('desktop-detail-content');
     $("#object-id").textContent = 'NO.' + archiveDisplayNumber(selected);
     $("#detail-content").innerHTML = `<div class="detail-kicker"><span>LOCAL DESKTOP · ${archiveDisplayNumber(selected)}</span><span>${escapeHtml(r.clearance)}</span></div>
@@ -619,7 +620,7 @@ function setTab(tab: string, sound = true) {
   indicator.style.transition = sound ? "" : "none";
   indicator.style.transform = `translateX(${tabButton.offsetLeft}px) scaleX(${tabButton.offsetWidth})`;
   $("#tab-panel").setAttribute("aria-labelledby", tabButton.id);
-  if (macPreview) {
+  if (desktopConnected) {
     desktopPreview?.destroy(); desktopPreview = undefined;
     const panel = $("#tab-panel"); panel.replaceChildren();
     if (tab === 'overview' && r.file) desktopPreview = new DesktopPreviewPanel(panel, r.file);
@@ -739,7 +740,7 @@ function renderResults() {
     ? results
         .map(
           ({ r, i }) =>
-            `<button class="result-row" data-result="${i}"><span class="result-name"><b>${escapeHtml(macPreview ? archiveDisplayNumber(i) : r.id)}</b><span>${escapeHtml(r.title)}<small>${escapeHtml(r.en)}</small></span>${saved.has(r.id) ? "<i>＋</i>" : ""}</span><span>${escapeHtml(r.department)}</span><span>${macPreview ? escapeHtml(r.clearance) : r.clearance === "RESTRICTED" ? "CATALOG ONLY" : "AUTHORIZED"} <i>↗</i></span></button>`,
+            `<button class="result-row" data-result="${i}"><span class="result-name"><b>${escapeHtml(desktopConnected ? archiveDisplayNumber(i) : r.id)}</b><span>${escapeHtml(r.title)}<small>${escapeHtml(r.en)}</small></span>${saved.has(r.id) ? "<i>＋</i>" : ""}</span><span>${escapeHtml(r.department)}</span><span>${desktopConnected ? escapeHtml(r.clearance) : r.clearance === "RESTRICTED" ? "CATALOG ONLY" : "AUTHORIZED"} <i>↗</i></span></button>`,
         )
         .join("")
     : `<div class="empty-results"><span>∅</span><strong>${modal === "saved" && !searchQuery ? tr("尚无收藏档案") : tr("没有匹配的档案")}</strong><p>${modal === "saved" && !searchQuery ? tr("读取档案时，选择 SAVE ARCHIVE 将其保存在此处。") : tr("尝试其他名称、档案编号，或切换科室分类。")}</p><button data-action="reset-search">${modal === "saved" ? tr("查看全部档案 →") : tr("重置检索 →")}</button></div>`;
@@ -1199,7 +1200,7 @@ async function toggleThree() {
 
 async function start() {
   try {
-    if (macPreview) await refreshDesktopArchives(true);
+    if (desktopConnected) await refreshDesktopArchives(true);
     if (isWallpaper) await window.rhineWallpaperPropertiesReady;
     if (!isWallpaper || wallpaperHost()?.properties.load3donstartup?.value !== false) {
       scene = new ArchiveScene($("#three-scene"));
@@ -1378,7 +1379,7 @@ if (isWallpaper) {
   workbench = new Workbench($("#stage"), () => {
     if (ready && mode !== "boot") setMode("archive");
   }, lane => {
-    if (!macPreview && ready && !modal) select(columnMemory[lane]);
+    if (!desktopConnected && ready && !modal) select(columnMemory[lane]);
   });
   playground = new ArchivePlayground($("#stage"), () => scene,
     () => ({ enabled: !!workbench?.enabled && mode === "archive" && ready, paused: Boolean(modal) || modalClosing || Boolean(wallpaperHost()?.paused) || document.hidden, reduced: prefs.reduced }),
@@ -1390,7 +1391,7 @@ if (isWallpaper) {
   });
 }
 async function refreshDesktopArchives(initial = false) {
-  if (!macPreview || desktopRefreshRunning || (!initial && (threeState === 'loading' || mode === 'boot'))) return;
+  if (!desktopConnected || desktopRefreshRunning || (!initial && (threeState === 'loading' || mode === 'boot'))) return;
   desktopRefreshRunning = true;
   desktopPages?.setArchiveStatus('正在核对本机目录…');
   try {
@@ -1413,7 +1414,7 @@ async function refreshDesktopArchives(initial = false) {
     desktopPages?.setArchiveStatus(desktopCatalogSignature ? `刷新失败，保留上次目录：${message}` : message);
   } finally { desktopRefreshRunning = false; }
 }
-if (macPreview) {
+if (localEdition) {
   desktopPages = new DesktopPages($('#viewport'), page => {
     playground?.stop();
     const enabled = page === 'workbench';
@@ -1430,6 +1431,7 @@ if (macPreview) {
   });
   window.setInterval(() => { if (desktopPages?.current === 'archive' && mode === 'archive' && !document.hidden && !modal && !viewer?.isOpen) void refreshDesktopArchives(); }, 60000);
 }
+mountConnections($(".system-nav"));
 void start();
 // Deterministic review controls: the running application, never a video surrogate.
 Object.assign(window, {

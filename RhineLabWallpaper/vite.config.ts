@@ -15,6 +15,7 @@ const hasNovecento = ["Normal", "DemiBold", "Bold"].every(weight =>
 export default defineConfig(({ mode }) => ({
   base: mode === "wallpaper" ? "./" : "/",
   define: {
+    __RHINE_EDITION__: JSON.stringify(process.env.RHINE_EDITION === "display" ? "display" : "local"),
     __RHINE_MODELS__: JSON.stringify(Object.fromEntries(models.map(model => [model.key,model.fileName]))),
     __RHINE_NOVECENTO__: JSON.stringify(hasNovecento),
   },

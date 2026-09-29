@@ -1,3 +1,4 @@
+import { allowsService } from './release-access';
 /** Read-only local bridge. File identities are supplied by the host, never paths from a website. */
 export interface DesktopFile {
   id: string; path: string; name: string;
@@ -12,6 +13,7 @@ export interface DesktopFolder { directory: DesktopFile; entries: DesktopFile[];
 export interface DesktopPreview { kind: 'directory' | 'text' | 'image' | 'pdf' | 'unsupported'; file: DesktopFile; text?: string; listing?: DesktopFolder; content_url?: string; message?: string; }
 
 export async function localJSON<T>(path: string, init: RequestInit = {}): Promise<T> {
+  if (!allowsService(path)) throw new Error('文件夹尚未授权，请先打开“本地连接”。');
   const response = await fetch(path, { ...init, credentials: 'same-origin', cache: 'no-store',
     headers: { 'X-Rhine-Local': '1', ...init.headers }, signal: init.signal ?? AbortSignal.timeout(15000) });
   if (!response.ok) throw new Error(response.status === 404 ? '文件已移动、删除或未在可访问目录中。' : `本机接口读取失败（${response.status}）。`);

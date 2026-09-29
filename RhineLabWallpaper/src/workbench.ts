@@ -1,3 +1,4 @@
+import { access, localEdition } from './release-access';
 import {fetchMacMedia,macMediaMarkup,type MacMedia} from './mac-media';
 import { tr, language, localeEvent, bindStaticTranslations } from "./i18n";
 import { rollText, patchRollingPanel } from "./workbench-rolling";
@@ -9,7 +10,8 @@ import "./workbench.css";
 import { defaultWorkbenchVisibility, applyVisibilityProperties, type WorkbenchVisibility, type WorkbenchElement } from "./workbench-visibility";
 import { getWidget, safeDetailUrl, formatSourceDate } from './secretary-client';
 
-const localSecretary = new URLSearchParams(location.search).get('mac') === '1';
+const localSecretary = localEdition && access.secretary === true;
+const localMedia = localEdition && access.media === true;
 type SecretaryView = Awaited<ReturnType<typeof getWidget>>;
 
 type Media = { status?: { enabled?: boolean }; properties?: { title?: string; artist?: string; albumTitle?: string }; thumbnail?: { thumbnail?: string }; timeline?: { position?: number; duration?: number }; playing?: boolean };
@@ -136,7 +138,7 @@ export class Workbench {
   select(lane: number) {
     if (!this.laneEnabled(lane)) return;
     this.lane = lane;
-    if (localSecretary && lane === 3) void this.refreshMedia();
+    if (localMedia && lane === 3) void this.refreshMedia();
     this.renderPanel();
   }
   private syncElements() {
@@ -194,7 +196,7 @@ export class Workbench {
     if (Math.floor(now / 1000) === this.lastSecond) return;
     this.lastSecond = Math.floor(now / 1000);
     if (localSecretary && this.enabled && now - this.lastSecretaryRefresh > 60000) void this.refreshSecretary();
-    if (localSecretary && this.enabled && this.lane === 3 && !document.hidden && !this.root.hidden && this.root.getClientRects().length && getComputedStyle(this.root).visibility !== "hidden") {
+    if (localMedia && this.enabled && this.lane === 3 && !document.hidden && !this.root.hidden && this.root.getClientRects().length && getComputedStyle(this.root).visibility !== "hidden") {
       if (now - this.lastMediaRefresh >= 5000) void this.refreshMedia();
       this.renderPanel();
     }
@@ -251,7 +253,7 @@ export class Workbench {
     }
     if (this.lane === 4) html = tr`<div class="wb-timer-label">${this.timer.phase === "focus" ? tr("专注") : tr("休息")} · ${this.timer.status === "done" ? tr("已结束") : this.timer.status === "running" ? tr("进行中") : this.timer.status === "paused" ? tr("已暂停") : tr("准备开始")}</div><div class="wb-large wb-timer-digits" data-wb-roll>${durationText(this.timer.status === "idle" ? this.minutes() * 60000 : timerLeft(this.timer, Date.now()))}</div><div class="wb-timer-buttons"><button data-wb-timer="toggle">${this.timer.status === "running" ? tr("暂停") : this.timer.status === "paused" ? tr("继续") : tr("开始")}</button><button data-wb-timer="reset">重置</button><button data-wb-timer="phase">${this.timer.phase === "focus" ? tr("转入休息") : tr("开始专注")}</button></div><p class="wb-muted">${this.timer.status === "done" ? tr("这一段时间已完成。准备好后再开始下一段。") : tr("暂停壁纸或重新加载后按实际时间校正。")}<br>时长在 Wallpaper Engine 中设置。</p>`;
     if (localSecretary && (this.lane === 1 || this.lane === 2)) html = this.secretaryMarkup(this.lane === 1 ? 'today' : 'schedule', 6);
-    if (localSecretary && this.lane === 3) html = macMediaMarkup(this.macMedia);
+    if (localMedia && this.lane === 3) html = macMediaMarkup(this.macMedia);
     patchRollingPanel(this.root.querySelector<HTMLElement>(".wb-content")!, html, !this.stage.classList.contains("reduce-motion"));
     this.root.querySelector(".wb-storage")!.textContent = this.storageOK ? "" : tr("当前无法保存进度，重新加载后可能丢失。");
   }

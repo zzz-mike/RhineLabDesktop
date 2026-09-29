@@ -1,3 +1,4 @@
+import { allowsService } from './release-access';
 import { SharedReadPool } from "./shared-read-pool";
 /** Fixed same-origin secretary API. Review capability is held in memory only. */
 export const widgetIds = [
@@ -648,6 +649,7 @@ async function readJSONTransport(
   signal?: AbortSignal,
   write?: { body: string; token: string },
 ): Promise<unknown> {
+  if (!allowsService(path)) throw new Error('此连接尚未开启，请在“本地连接”中授权。');
   const controller = new AbortController(),
     timer = setTimeout(() => controller.abort(), 12000);
   const abort = () => controller.abort();

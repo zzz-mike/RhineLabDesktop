@@ -1,9 +1,10 @@
+import { modernUI } from './release-access';
 import { manualDisplayQuality, normalizeMacDisplay } from './mac-pixel-budget';
 import type { RenderQuality } from './render-quality';
 import { normalizeShadowMode } from './mac-shadow-mode';
 type Plugin = 'diagnostics' | 'reuseWork' | 'staticViewer' | 'lowLoad' | 'projectedShadows' | 'lightweightDof' | 'simpleArray';
 const defaults: Record<Plugin, boolean> = { diagnostics: true, reuseWork: true, staticViewer: true, lowLoad: true, projectedShadows: true, lightweightDof: true, simpleArray: true };
-const active = new URLSearchParams(location.search).get('mac') === '1';
+const active = modernUI;
 export const macPerformanceEnabled = active;
 let shadowMode = normalizeShadowMode(null);
 try { shadowMode = normalizeShadowMode(localStorage.getItem('rhine-mac-shadows')); } catch {}

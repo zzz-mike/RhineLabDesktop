@@ -3,7 +3,8 @@ import english from "../content/archives.en.json" with { type: "json" };
 import { language, localeEvent } from "./i18n";
 import type { DesktopCatalog, DesktopFile } from './desktop-files';
 
-export const desktopArchiveMode = new URLSearchParams(location.search).get('mac') === '1';
+import { desktopConnected } from './release-access';
+export const desktopArchiveMode = desktopConnected;
 
 export interface ArchiveRecord {
   id: string;

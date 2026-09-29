@@ -1,8 +1,9 @@
+import { modernUI } from './release-access';
 import * as THREE from 'three';
 import { records, archiveDisplayNumber } from './data';
 
 export type MarkerMode = 'hidden' | 'original' | 'number';
-const active = new URLSearchParams(location.search).get('mac') === '1';
+const active = modernUI;
 export const normalizeMarkerMode = (v: unknown): MarkerMode => v === 'hidden' || v === 'number' ? v : 'original';
 let mode: MarkerMode = 'original';
 try { mode = normalizeMarkerMode(localStorage.getItem('rhine-index-marker')); } catch {}

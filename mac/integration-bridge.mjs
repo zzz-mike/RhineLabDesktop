@@ -205,7 +205,7 @@ async function readBody(req,{strict=false,maxBytes=4096}={}) {
 const oneId = url => {if([...url.searchParams.keys()].some(k=>k!=='id') || url.searchParams.getAll('id').length!==1)reject(400,'id_required');return url.searchParams.get('id');};
 
 /** Install by awaiting handler(req,res) before the existing static routes; true means handled. */
-export function createIntegrationBridge({files=new DesktopFiles(),port=5180,secretary=fetchSecretary,secretaryReview=createSecretaryReviewClient(),secretaryProjectReview=createSecretaryReviewClient({project:true}),solar=createSolarReader(),media=readMediaState,enableFileActions=false}={}) {
+export function createIntegrationBridge({files=new DesktopFiles(),port=5180,secretary=fetchSecretary,secretaryReview=createSecretaryReviewClient(),secretaryProjectReview=createSecretaryReviewClient({project:true}),solar=createSolarReader(),media=readMediaState,enableFileActions=false,permissions={desktop:true,secretary:true,solar:true,media:true}}={}) {
   const actionToken=randomBytes(32).toString('hex'); const reviewToken=randomBytes(32).toString('hex'); const previews=new Map();
   const readSecretary=coalesceReads(secretary);
   return async function handle(req,res) {
@@ -248,7 +248,7 @@ export function createIntegrationBridge({files=new DesktopFiles(),port=5180,secr
       if(url.pathname.startsWith('/api/solar/')) {const result=await solar(url);json(res,result.status,result.data);return true;}
       if(url.pathname==='/api/local/v1/capabilities') {
         if(url.search)reject(400,'no_query_allowed');
-        json(res,200,{schema_version:'1.0',desktop_read:true,file_actions:enableFileActions,action_token:enableFileActions?actionToken:null,secretary_review:true,secretary_details:true,secretary_project_review:true,secretary_review_token:reviewToken,solar_read:true,media_read:await mediaAvailable()});return true;
+        json(res,200,{schema_version:'1.0',desktop_read:permissions.desktop,file_actions:permissions.desktop&&enableFileActions,action_token:permissions.desktop&&enableFileActions?actionToken:null,secretary_review:permissions.secretary,secretary_details:permissions.secretary,secretary_project_review:permissions.secretary,secretary_review_token:permissions.secretary?reviewToken:null,solar_read:permissions.solar,media_read:permissions.media?await mediaAvailable():false});return true;
       }
       if(url.pathname==='/api/media/v1/state') {if(url.search)reject(400,'no_query_allowed');json(res,200,await media());return true;}
       if(url.pathname==='/api/desktop/v1/catalog') {if(url.search)reject(400,'no_query_allowed');json(res,200,await files.columns());return true;}

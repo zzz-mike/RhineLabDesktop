@@ -1,24 +1,57 @@
 # 莱茵生命终端 · RhineLabDesktop
 
-基于 **[LBEILC](https://github.com/LBEILC)** 的 **[RhineLabWallpaper](https://github.com/LBEILC/RhineLabWallpaper)** 修改，由 **[zzz-mike](https://github.com/zzz-mike)** 维护和发布的 Mac 本地桌面工作台版本。原网页项目为 [RhineLabUI](https://github.com/LBEILC/RhineLabUI)。本版本不是原作者的官方发行版。
+基于 **[LBEILC](https://github.com/LBEILC)** 的 **[RhineLabWallpaper](https://github.com/LBEILC/RhineLabWallpaper)** 修改，由 **[zzz-mike](https://github.com/zzz-mike)** 维护和发布。原网页项目：[RhineLabUI](https://github.com/LBEILC/RhineLabUI)。这是独立修改版，不是原作者官方发行。
 
-保留原项目的三维档案阵列、开场动画与交互，加入 Mac 画面设置、组件布局编辑、任务分类与分页，以及本地桌面文件、AI 秘书和光伏监测服务的连接代码。
+## 选择下载版本
 
-![原项目三维档案界面](RhineLabWallpaper/docs/media/archive.jpg)
+**[前往 Releases 下载 v0.2.0](https://github.com/zzz-mike/RhineLabDesktop/releases/tag/v0.2.0)**
 
-*上图来自原项目，展示三维档案界面；并非本修改版新增组件的截图。*
+| 下载包 | 支持系统 | 本地文件访问 |
+| --- | --- | --- |
+| **RhineLabDisplay-v0.2.0.zip**（推荐） | Windows / macOS，浏览器运行 | 不带文件接入服务；保留画质、动画、内置档案和基础工作台 |
+| **RhineLabMacLocal-v0.2.0.zip** | macOS 12+，Apple Silicon / Intel，浏览器运行 | 默认关闭；系统选择窗口授权具体目录后才读取 |
+
+两个包共用画质与交互源码。纯展示包不附带 Mac 桥接代码，改网址参数不能开启文件访问。Mac 接入包默认关闭目录、文件打开、AI 秘书、光伏和媒体连接，分别由用户开启；停止服务后授权清空。
+
+Windows 用户不需要 AI 改代码：安装 Node.js，下载纯展示包即可使用。Mac 接入版的文件选择、打开文件和访达定位尚未适配 Windows；不要把它当作 Windows 完整版。
+
+## 普通用户启动
+
+1. 从 **[Node.js 官网](https://nodejs.org/)** 安装 Node.js 22.12 或更新版本。
+2. 下载并解压所选版本。
+3. Windows 双击 `Start-Windows.cmd`；Mac 双击 `Start-Mac.command`。也可以在解压文件夹中运行 `node server.mjs`。
+4. 浏览器会自动打开。纯展示版端口为 5190；Mac 接入版为 5191，先进入“本地连接”页。
+5. 启动窗口保持运行；按 `Ctrl+C` 停止。不要直接双击网页文件。
+
+详情：[纯展示版说明](docs/DISPLAY.md) · [Mac 接入版说明](docs/MAC-LOCAL.md)
+
+推荐使用支持 WebGL 2、启用硬件加速的 Chrome 或 Edge。当前下载包是浏览器运行包，不是 Windows `.exe` 或经过 Apple 公证的 Mac `.app`。Node.js 提供仅本机可访问的服务，不需要 AI、账户或 API Key。
+
+## Mac 接入如何授权
+
+“本地连接”始终可从界面进入。未授权时显示内置档案，不扫描桌面。
+
+- 点击“选择并授权文件夹”，在系统选择窗口确认具体目录；取消不改变授权。
+- 授权读取文件名、目录与预览内容。默认关闭外部文件打开；如需在其他应用打开或访达定位，再单独启用。
+- AI 秘书、光伏和媒体分别有开关，需自行配置兼容的本机服务。程序不会自动调用模型，也不会因接入文件夹而读取秘书的摘要索引。
+- “断开全部”撤销所有连接，清除本次目录与预览缓存/令牌，并终止正在返回的数据。其他莱茵页面会刷新；已在外部应用中打开的文件不会被强制关闭。
+- 授权只在本次服务进程内存中保存，重启全部关闭。不提供删除、移动或修改原文件的接口，不自动上传文件。
+
+当前使用软件目录边界和 macOS 自身权限控制，**不是 macOS 沙盒应用**。系统提示所显示的进程名称取决于启动方式；无需开放完全磁盘访问。若系统阻止选择器运行，应先核验来源或使用纯展示版，不必关闭安全保护。
 
 ## 来源与许可
 
-- 原作者：**LBEILC**；原仓库：[LBEILC/RhineLabWallpaper](https://github.com/LBEILC/RhineLabWallpaper)。
-- 本地来源记录的上游提交：`ae2b2434ae18585aaf32458d9e9f9aaaa480ce56`；详见 [来源记录](RhineLabWallpaper/SOURCE-PROVENANCE.json)。这是本地修改快照，不包含上游完整 Git 历史。
-- 保留 **MIT License** 与 `Copyright (c) 2026 LBEILC`，详见 [LICENSE](LICENSE) 和 [ATTRIBUTION.md](ATTRIBUTION.md)。
-- 字体、第三方库及资源声明见 [THIRD-PARTY-NOTICES.txt](RhineLabWallpaper/public/THIRD-PARTY-NOTICES.txt)。发行包不包含本机单独授权的 Novecento 字体二进制。
-- 《明日方舟》相关名称、标志、角色及世界观归原权利方所有；本项目为非官方同人作品。
+- 原作者：**LBEILC**；原仓库：[RhineLabWallpaper](https://github.com/LBEILC/RhineLabWallpaper)。
+- 上游来源记录的提交：`ae2b2434ae18585aaf32458d9e9f9aaaa480ce56`，详见 [来源记录](RhineLabWallpaper/SOURCE-PROVENANCE.json)。本仓库从本地修改快照建立，不包含完整上游 Git 历史。
+- 保留 **MIT License** 和 `Copyright (c) 2026 LBEILC`，见 [LICENSE](LICENSE)、[ATTRIBUTION.md](ATTRIBUTION.md)。
+- 字体、第三方库和资源声明见 [THIRD-PARTY-NOTICES.txt](RhineLabWallpaper/public/THIRD-PARTY-NOTICES.txt)。不分发本机单独许可的 Novecento 字体二进制。
+- 《明日方舟》名称、标志、角色与世界观归原权利方所有；这是非官方同人项目。
 
-## 运行
+![原项目三维档案界面](RhineLabWallpaper/docs/media/archive.jpg)
 
-需要 **Node.js 22.12 或更新版本**、npm，以及支持 WebGL 2 的浏览器。桌面文件操作和原生窗口面向 macOS；原生应用构建脚本面向 Apple Silicon / macOS 14 或更新版本。
+*图片来自原项目，展示三维档案；不是本版权限页或新组件截图。*
+
+## 从源码构建
 
 ```sh
 git clone https://github.com/zzz-mike/RhineLabDesktop.git
@@ -26,47 +59,25 @@ cd RhineLabDesktop/RhineLabWallpaper
 npm ci
 npm run build:wallpaper
 cd ..
-node mac/server.mjs
 ```
 
-打开 **http://127.0.0.1:5180/?mac=1**。服务器只监听本机地址；终端按 `Ctrl+C` 停止。若 5180 端口已被其他程序占用，先处理端口冲突。
+默认构建 Mac 接入前端，未授权时保留内置档案。在 Mac 上先 `sh tools/build-picker.sh` 编译系统文件夹选择器，再 `node mac/server.mjs`；打开 `http://127.0.0.1:5191/connections`。源码构建选择器需要 Apple Command Line Tools；Release 包已附带选择器。
 
-[Releases](https://github.com/zzz-mike/RhineLabDesktop/releases) 的完整快照包附带预构建网页，解压后可直接在根目录运行 `node mac/server.mjs`；它仍需要自行安装 Node.js。源码 ZIP 需要先按上面步骤构建。
-
-## 本地数据与功能边界
-
-- 三维档案和内置主题资源随项目提供；偏好设置保存在本地浏览器中。
-- 桌面文件功能读取当前用户的 Desktop，文件打开等操作由本机桥接处理。只在了解这些功能时启动服务，保持仅本机访问。
-- AI 秘书和光伏组件需要独立运行、接口兼容的本地服务。这里发布的是连接代码，不包含这些后端及其数据；未配置时相关组件可能显示不可用。
-- 媒体信息依赖本机媒体集成能力，缺失时不保证能够读取。
-- 发布内容不包含个人桌面文件、真实项目资料、业务数据、日志、凭据或本机依赖缓存。
-- 组件布局与本地交互已存在于此修改快照；持续性能、所有快捷键和真实 Wallpaper Engine 环境仍需在使用者设备上验证。
-
-## 可选：构建 Mac 独立窗口
-
-安装 Apple Command Line Tools 后，在仓库根目录执行：
+在 Mac 上构建两个完整发行包：
 
 ```sh
-mkdir -p .runtime/node-v22.22.0-darwin-arm64/bin
-ln -s "$(command -v node)" .runtime/node-v22.22.0-darwin-arm64/bin/node
-zsh mac/app/build.sh
-open 莱茵生命终端.app
+sh tools/build-picker.sh
+node tools/build-releases.mjs
 ```
 
-应用记录当前仓库路径，因此移动文件夹后需要重新构建。当前提供原生窗口源码；没有发布经过 Apple 公证的可安装应用。
-
-## 验证与目录
+输出在 `release/`，包括两个 ZIP 和 SHA-256 校验文件。纯展示前端通过构建参数 `RHINE_EDITION=display` 固定关闭本地访问；Windows CI 用该参数构建和验证网页服务器。
 
 ```sh
+node --test tests/*.test.mjs mac/*.test.mjs
 cd RhineLabWallpaper
 npm run check:content
-npm run build:wallpaper
-cd ..
-node --test mac/*.test.mjs
 ```
 
-- `RhineLabWallpaper/`：前端源码、主题资源、原项目文档和构建脚本。
-- `mac/`：本地服务、桌面/媒体/数据桥接及测试。
-- `mac/app/`：Cocoa + WebKit 原生窗口源码及构建脚本。
+`.github/workflows/verify.yml` 在 Windows 和 macOS 检查展示服务器、内容与前端构建，并在 macOS 检查授权及桥接。浏览器画面、系统选择窗口及不同硬件表现需与自动化检查分开看待。
 
-`RhineLabWallpaper/README.md` 和其中的历史文档来自原项目，包含原作者的在线体验、创意工坊、下载地址及历史验证说明；它们不代表本仓库的发行渠道或本轮验证结果。本修改版的入口与限制以当前 README 为准。
+`RhineLabWallpaper/` 中保留原项目历史文档和链接；本修改版的版本选择、权限和启动方法以当前 README 为准。v0.1.0 属于旧的默认接入快照，新用户请使用 v0.2.0。

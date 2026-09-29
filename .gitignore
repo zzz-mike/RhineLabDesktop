@@ -15,3 +15,6 @@ __pycache__/
 *.pyc
 public/fonts/novecento/
 RhineLabWallpaper/public/fonts/novecento/
+
+# Generated native folder picker
+mac/bin/

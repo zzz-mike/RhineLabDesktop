@@ -1,9 +1,10 @@
+import { desktopConnected } from './release-access';
 import { InformationWidgets } from './information-widgets';
 import { corePages, PageGesture, restoreWebsites, safeWebsiteUrl, type WebsitePage } from './desktop-navigation';
 import './desktop-pages.css';
 
 const storageKey = 'rhine-desktop-pages-v1';
-const labels: Record<string, string> = { workbench: '工作台', archive: '桌面档案', information: '秘书信息' };
+const labels: Record<string, string> = { workbench: '工作台', archive: desktopConnected ? '本地档案' : '内置档案', information: '秘书信息' };
 const node = <K extends keyof HTMLElementTagNameMap>(tag: K, text?: string, className?: string) => {
   const result = document.createElement(tag); if (text !== undefined) result.textContent = text; if (className) result.className = className; return result;
 };

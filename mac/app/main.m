@@ -10,7 +10,7 @@
 @end
 @implementation RhineApp
 - (NSString *)project { return [NSBundle.mainBundle objectForInfoDictionaryKey:@"RhineProjectPath"]; }
-- (NSURL *)home { return [NSURL URLWithString:@"http://127.0.0.1:5180/?mac=1"]; }
+- (NSURL *)home { return [NSURL URLWithString:@"http://127.0.0.1:5191/?mac=1"]; }
 - (void)applicationDidFinishLaunching:(NSNotification *)note {
     [self menus];
     WKWebViewConfiguration *config = [WKWebViewConfiguration new];
@@ -69,12 +69,12 @@
     [self connect];
 }
 - (void)connect {
-    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://127.0.0.1:5180/__rhine_health"]]; request.timeoutInterval=1;
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://127.0.0.1:5191/__rhine_health"]]; request.timeoutInterval=1;
     [[NSURLSession.sharedSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if([response isKindOfClass:NSHTTPURLResponse.class]) {
                 NSDictionary *value=data?[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]:nil;
-                if(((NSHTTPURLResponse *)response).statusCode!=200 || ![value isKindOfClass:NSDictionary.class] || ![value[@"app"] isEqual:@"rhine-mac-local"]) { [self failure:@"5180端口已有其他服务，未尝试替换它。"]; return; }
+                if(((NSHTTPURLResponse *)response).statusCode!=200 || ![value isKindOfClass:NSDictionary.class] || ![value[@"app"] isEqual:@"rhine-mac-local"]) { [self failure:@"5191端口已有其他服务，未尝试替换它。"]; return; }
                 [self.web loadRequest:[NSURLRequest requestWithURL:self.home]]; return;
             }
             if(!self.launched) { self.launched=YES; if(![self launchServer]) return; }
@@ -99,7 +99,7 @@
 - (void)failure:(NSString *)message { NSAlert *alert=[NSAlert new]; alert.messageText=@"终端暂时无法打开"; alert.informativeText=message; [alert beginSheetModalForWindow:self.window completionHandler:nil]; }
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)visible { [self.window makeKeyAndOrderFront:nil]; return YES; }
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender { return YES; }
-- (BOOL)local:(NSURL *)url { return [url.scheme isEqual:@"http"] && [url.host isEqual:@"127.0.0.1"] && url.port.integerValue==5180; }
+- (BOOL)local:(NSURL *)url { return [url.scheme isEqual:@"http"] && [url.host isEqual:@"127.0.0.1"] && url.port.integerValue==5191; }
 - (void)external:(NSURL *)url { if([@[@"https",@"http",@"mailto"] containsObject:url.scheme]) [NSWorkspace.sharedWorkspace openURL:url]; }
 - (void)webView:(WKWebView *)view decidePolicyForNavigationAction:(WKNavigationAction *)action decisionHandler:(void (^)(WKNavigationActionPolicy))handler {
     NSURL *url=action.request.URL;

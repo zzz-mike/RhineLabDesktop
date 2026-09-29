@@ -1,3 +1,4 @@
+import { modernUI } from './release-access';
 import { performancePlugin, macPerformanceEnabled, macRenderQuality, macShadowMode } from "./mac-performance";
 import { shadowPolicy } from './mac-shadow-mode';
 import { ContactShadows } from './contact-shadows';
@@ -1217,7 +1218,7 @@ export class ArchiveScene {
         if (this.relayActive) { e.preventDefault(); return; }
         // Mac workbench and desktop archives share direct projected-plane scrolling.
         // The OS already supplies inertial deltas, so never add a second fling.
-        if (new URLSearchParams(location.search).get("mac") === "1" &&
+        if (modernUI &&
             e.deltaMode === 0 && !e.ctrlKey &&
             activePointer === null && this.canBrowse()) {
           e.preventDefault(); e.stopPropagation();

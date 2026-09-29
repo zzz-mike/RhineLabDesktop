@@ -24,8 +24,8 @@ const entryId = entry => entry.info.isFile() && entry.info.nlink > 1n
 
 /** Read-only Desktop map. No watcher, recursive scan, mutation, or automatic application launch. */
 export class DesktopFiles {
-  constructor({root = resolve(homedir(), 'Desktop'), summaryPath = SUMMARY_PATH, maxEntries = 2000, maxPreviewBytes = 20 * 1024 * 1024, exec = execFileAsync} = {}) {
-    this.root = resolve(root); this.summaryPath = summaryPath; this.maxEntries = maxEntries;
+  constructor({root = resolve(homedir(), 'Desktop'), summaryPath = SUMMARY_PATH, rootLabel = '桌面', maxEntries = 2000, maxPreviewBytes = 20 * 1024 * 1024, exec = execFileAsync} = {}) {
+    this.root = resolve(root); this.rootLabel = rootLabel; this.summaryPath = summaryPath; this.maxEntries = maxEntries;
     this.maxPreviewBytes = maxPreviewBytes; this.exec = exec; this.known = new Map();
     this.summaryCache = null; this.summaryStamp = null; this.summaryChecked = 0;
   }
@@ -40,6 +40,7 @@ export class DesktopFiles {
     return {path: relative(root, candidate).split(sep).join('/'), absolute: candidate, resolved, info};
   }
   async summaries() {
+    if (!this.summaryPath) return null;
     if (Date.now() - this.summaryChecked < 10000) return this.summaryCache;
     this.summaryChecked = Date.now();
     try {
@@ -72,7 +73,7 @@ export class DesktopFiles {
   async describe(entry) {
     const {info, path} = entry;
     const id = entryId(entry);
-    const descriptor = {id, identity_kind:info.isFile() && info.nlink > 1n ? 'hardlink_alias' : 'inode', path, name:path ? basename(path) : '桌面', kind:info.isDirectory() ? 'directory' : info.isFile() ? 'file' : 'unsupported', size:info.isFile() ? Number(info.size) : null, modified_at:new Date(Number(info.mtimeMs)).toISOString(), version:fingerprint(info), extension:extname(path).toLowerCase(), summary:await this.summary(entry)};
+    const descriptor = {id, identity_kind:info.isFile() && info.nlink > 1n ? 'hardlink_alias' : 'inode', path, name:path ? basename(path) : this.rootLabel, kind:info.isDirectory() ? 'directory' : info.isFile() ? 'file' : 'unsupported', size:info.isFile() ? Number(info.size) : null, modified_at:new Date(Number(info.mtimeMs)).toISOString(), version:fingerprint(info), extension:extname(path).toLowerCase(), summary:await this.summary(entry)};
     this.known.set(id, {path, version:descriptor.version});
     if (this.known.size > 20000) this.known.delete(this.known.keys().next().value);
     return descriptor;
@@ -96,10 +97,10 @@ export class DesktopFiles {
       try { const contents = await this.list(entry.path,Math.max(0,budget)); budget -= contents.entries.length; columns.push({id:entry.id, title:entry.name, directory:entry, entries:contents.entries, total:contents.total, truncated:contents.truncated}); }
       catch { columns.push({id:entry.id,title:entry.name,directory:entry,entries:[],total:null,status:'unavailable'}); }
     }
-    columns.push({id:'desktop:loose-files',title:'桌面散文件',directory:top.directory,entries:loose,total:loose.length,truncated:false});
+    columns.push({id:'desktop:loose-files',title:this.rootLabel+'散文件',directory:top.directory,entries:loose,total:loose.length,truncated:false});
     const truncated = top.truncated || columns.some(column => column.truncated);
     const unavailable = columns.some(column => column.status === 'unavailable' || column.entries.some(entry=>entry.kind==='unavailable'));
-    return {schema_version:'1.0',status:truncated || unavailable ? 'partial' : 'ok',root_label:'桌面',columns,hidden_files:'excluded',truncated,generated_at:top.generated_at};
+    return {schema_version:'1.0',status:truncated || unavailable ? 'partial' : 'ok',root_label:this.rootLabel,columns,hidden_files:'excluded',truncated,generated_at:top.generated_at};
   }
   async pathForId(id) {
     const known = this.known.get(id); if (!known) fail(404,'list_file_first');
