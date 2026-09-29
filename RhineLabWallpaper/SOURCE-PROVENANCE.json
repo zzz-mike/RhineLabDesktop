@@ -1,0 +1,28 @@
+{
+  "repository": "https://github.com/LBEILC/RhineLabWallpaper",
+  "commit": "ae2b2434ae18585aaf32458d9e9f9aaaa480ce56",
+  "files": 1074,
+  "method": "Fixed-commit source snapshot verified against Git blob SHA1; src/main.ts has documented Mac settings adaptation; upstream copy in mac/upstream-main-ae2b243.ts",
+  "excluded": [
+    "art",
+    "reference",
+    "verification",
+    ".github"
+  ],
+  "local_modifications": [
+    "src/main.ts: Mac settings and performance controls",
+    "src/scene.ts: optional projection and picking object reuse",
+    "src/model-viewer.ts: optional conservative static frame cache",
+    "src/mac-performance.ts",
+    "src/viewer-frame-cache.ts",
+    "scripts/check-mac-performance.mjs",
+    "src/mac-pixel-budget.ts: low-load render target limits",
+    "src/quality-renderer.ts: optional low-load dimensions",
+    "src/projected-shadows.ts: fixed-light floor silhouettes shared by background and near files",
+    "src/lightweight-dof.ts: quarter-resolution blur with shared AO depth and original Bokeh fallback",
+    "src/shared-depth.ts: exclude cosmetic shadows from normal/depth passes",
+    "src/scene.ts: Mac shadow/DOF toggles, lifecycle and diagnostics",
+    "scripts/check-mac-effects.mjs: projection and render lifecycle regression checks",
+    "mac-effects-review.html, src/mac-effects-review.ts, scripts/serve-mac-effects.mjs: local bounded GPU comparison"
+  ]
+}

@@ -1,0 +1,4 @@
+#index-marker-test{position:fixed;right:10px;top:50%;transform:translateY(-50%);z-index:10000;padding:9px 10px;border:1px solid #79797080;border-radius:6px;background:#efeee8f2;color:#252721;font:12px system-ui;box-shadow:0 2px 8px #0001;max-width:180px}
+#index-marker-test label{display:grid;gap:6px}
+#index-marker-test select{font:inherit;color:inherit;background:#fff;border:1px solid #aaa99f;border-radius:3px;padding:5px;max-width:160px}
+@media(max-width:700px){#index-marker-test{top:auto;bottom:55px;transform:none;font-size:11px}}

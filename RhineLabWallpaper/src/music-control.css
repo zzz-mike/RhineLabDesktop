@@ -1,0 +1,12 @@
+.music-control { position: relative; pointer-events: auto; }
+.system-nav .music-button { display: flex; align-items: center; gap: 7px; }
+.music-button > span:first-child { font-size: 20px; }
+.music-button.is-muted > span:first-child { opacity: .45; }
+.music-panel { position: absolute; top: calc(100% + 14px); right: 0; width: 224px; padding: 18px; background: var(--paper, #eeeae3); color: var(--ink, #20231e); border: 1px solid currentColor; box-shadow: 0 6px 20px #0002; z-index: 20; }
+.music-panel[hidden] { display: none; }
+.music-panel strong { font-size: 14px; }
+.music-panel label { display: block; margin-top: 16px; font-size: 12px; }
+.music-panel output { float: right; }
+.music-panel input { display: block; width: 100%; margin: 12px 0; accent-color: #6d7560; cursor: pointer; }
+.system-nav .music-panel .music-mute { display: block; min-height: 36px; width: 100%; border: 1px solid currentColor; font-size: 12px; text-align: center; }
+.music-panel small { display: block; margin-top: 6px; font-size: 11px; }

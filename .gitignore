@@ -1,0 +1,17 @@
+node_modules/
+dist/
+release/
+.runtime/
+*.app/
+mac/app/AppIcon.iconset/
+mac/logs/
+*.pid
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+public/fonts/novecento/
+RhineLabWallpaper/public/fonts/novecento/

@@ -1,0 +1,1160 @@
+{
+  "title": "Rhine Lab · 莱茵生命终端（zzz-mike 修改版）",
+  "description": "基于 LBEILC/RhineLabWallpaper 的非官方修改版，由 zzz-mike 发布。原项目：https://github.com/LBEILC/RhineLabWallpaper 。MIT 许可及原作者版权声明随包保留。增加 Mac 本地工作台、组件布局与本地服务桥接；外部 AI 秘书和光伏后端需另行配置。",
+  "type": "web",
+  "file": "index.html",
+  "preview": "preview.gif",
+  "visibility": "public",
+  "contentrating": "Everyone",
+  "tags": [
+    "Technology"
+  ],
+  "general": {
+    "supportsaudioprocessing": true,
+    "properties": {
+      "language": {
+        "order": -1,
+        "text": "ui_language",
+        "type": "combo",
+        "value": "zh-CN",
+        "options": [
+          {
+            "label": "ui_language_0",
+            "value": "zh-CN"
+          },
+          {
+            "label": "ui_language_1",
+            "value": "en-US"
+          }
+        ]
+      },
+      "desktopmode": {
+        "order": 0,
+        "text": "ui_desktopmode",
+        "type": "combo",
+        "value": "workbench",
+        "options": [
+          {
+            "label": "ui_desktopmode_0",
+            "value": "workbench"
+          },
+          {
+            "label": "ui_desktopmode_1",
+            "value": "archive"
+          }
+        ]
+      },
+      "groupidentity": {
+        "order": 0.5,
+        "text": "登录身份 | Login identity",
+        "type": "group"
+      },
+      "sessionname": {
+        "order": 0.6,
+        "text": "ui_sessionname",
+        "type": "textinput",
+        "value": "JOYCE MOORE"
+      },
+      "groupopening": {
+        "order": 1,
+        "text": "入场与画面 | Opening & appearance",
+        "type": "group"
+      },
+      "boot": {
+        "order": 2,
+        "text": "ui_boot",
+        "type": "bool",
+        "value": true
+      },
+      "load3donstartup": {
+        "order": 2.5,
+        "text": "ui_load3donstartup",
+        "type": "bool",
+        "value": true
+      },
+      "openingdetail": {
+        "order": 3,
+        "text": "ui_openingdetail",
+        "type": "combo",
+        "value": "auto",
+        "options": [
+          {
+            "label": "ui_openingdetail_0",
+            "value": "auto"
+          },
+          {
+            "label": "ui_openingdetail_1",
+            "value": "show"
+          },
+          {
+            "label": "ui_openingdetail_2",
+            "value": "skip"
+          }
+        ],
+        "condition": "boot.value == true"
+      },
+      "renderquality": {
+        "order": 6,
+        "text": "ui_renderquality",
+        "type": "combo",
+        "value": "original",
+        "options": [
+          {
+            "label": "ui_renderquality_0",
+            "value": "performance"
+          },
+          {
+            "label": "ui_renderquality_1",
+            "value": "original"
+          },
+          {
+            "label": "ui_renderquality_2",
+            "value": "high"
+          },
+          {
+            "label": "ui_renderquality_3",
+            "value": "ultra"
+          },
+          {
+            "label": "ui_renderquality_4",
+            "value": "custom"
+          }
+        ],
+        "condition": "superperformance.value == false"
+      },
+      "reduced": {
+        "order": 7,
+        "text": "ui_reduced",
+        "type": "bool",
+        "value": false
+      },
+      "groupworkbench": {
+        "order": 8,
+        "text": "工作台 · 界面显示 | Workspace · Visibility",
+        "type": "group",
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "showclock": {
+        "order": 9,
+        "text": "ui_showclock",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "showtasks": {
+        "order": 10,
+        "text": "ui_showtasks",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "showmodule": {
+        "order": 11,
+        "text": "ui_showmodule",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "shownavigation": {
+        "order": 12,
+        "text": "ui_shownavigation",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "showbrand": {
+        "order": 13,
+        "text": "ui_showbrand",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "showfooter": {
+        "order": 14,
+        "text": "ui_showfooter",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "selectionstyle": {
+        "order": 16,
+        "text": "ui_selectionstyle",
+        "type": "combo",
+        "value": "music-flat",
+        "options": [
+          {
+            "label": "ui_selectionstyle_0",
+            "value": "original"
+          },
+          {
+            "label": "ui_selectionstyle_1",
+            "value": "music-flat"
+          },
+          {
+            "label": "ui_selectionstyle_2",
+            "value": "flat"
+          }
+        ],
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "groupcontent": {
+        "order": 18,
+        "text": "工作台 · 事项与日程 | Workspace · Tasks & events",
+        "type": "group",
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "idlebreathing": {
+        "order": 17,
+        "text": "ui_idlebreathing",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "task1": {
+        "order": 19,
+        "text": "ui_task1",
+        "type": "textinput",
+        "value": "",
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "task2": {
+        "order": 20,
+        "text": "ui_task2",
+        "type": "textinput",
+        "value": "",
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "task3": {
+        "order": 21,
+        "text": "ui_task3",
+        "type": "textinput",
+        "value": "",
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "eventname": {
+        "order": 22,
+        "text": "ui_eventname",
+        "type": "textinput",
+        "value": "",
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "eventdate": {
+        "order": 23,
+        "text": "ui_eventdate",
+        "type": "textinput",
+        "value": "",
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "focusminutes": {
+        "order": 24,
+        "text": "ui_focusminutes",
+        "type": "slider",
+        "value": 25,
+        "min": 1,
+        "max": 120,
+        "step": 1,
+        "precision": 0,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "breakminutes": {
+        "order": 25,
+        "text": "ui_breakminutes",
+        "type": "slider",
+        "value": 5,
+        "min": 1,
+        "max": 60,
+        "step": 1,
+        "precision": 0,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "groupaudio": {
+        "order": 26,
+        "text": "声音 | Audio",
+        "type": "group"
+      },
+      "sound": {
+        "order": 27,
+        "text": "ui_sound",
+        "type": "bool",
+        "value": true
+      },
+      "soundvolume": {
+        "order": 28,
+        "text": "ui_soundvolume",
+        "type": "slider",
+        "value": 55,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "precision": 0,
+        "condition": "sound.value == true"
+      },
+      "music": {
+        "order": 29,
+        "text": "ui_music",
+        "type": "bool",
+        "value": true
+      },
+      "musicvolume": {
+        "order": 30,
+        "text": "ui_musicvolume",
+        "type": "slider",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "precision": 0,
+        "condition": "music.value == true"
+      },
+      "groupreactive": {
+        "order": 31,
+        "text": "工作台 · 音乐律动 | Workspace · Audio response",
+        "type": "group",
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "audioreactive": {
+        "order": 32,
+        "text": "ui_audioreactive",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "reactiveintensity": {
+        "order": 34,
+        "text": "ui_reactiveintensity",
+        "type": "slider",
+        "value": 100,
+        "min": 0,
+        "max": 200,
+        "step": 1,
+        "precision": 0,
+        "condition": "desktopmode.value == 'workbench' && audioreactive.value == true"
+      },
+      "reactivemute": {
+        "order": 35,
+        "text": "ui_reactivemute",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench' && audioreactive.value == true"
+      },
+      "groupgame": {
+        "order": 36,
+        "text": "工作台 · 波纹接力 | Workspace · Ripple relay",
+        "type": "group",
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "showgame": {
+        "order": 37,
+        "text": "ui_showgame",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "gamepace": {
+        "order": 38,
+        "text": "ui_gamepace",
+        "type": "combo",
+        "value": "normal",
+        "options": [
+          {
+            "label": "ui_gamepace_0",
+            "value": "gentle"
+          },
+          {
+            "label": "ui_gamepace_1",
+            "value": "normal"
+          },
+          {
+            "label": "ui_gamepace_2",
+            "value": "quick"
+          }
+        ],
+        "condition": "desktopmode.value == 'workbench' && showgame.value == true"
+      },
+      "colortheme": {
+        "order": 4,
+        "text": "ui_colortheme",
+        "type": "combo",
+        "value": "light",
+        "options": [
+          {
+            "label": "ui_colortheme_0",
+            "value": "light"
+          },
+          {
+            "label": "ui_colortheme_1",
+            "value": "dark"
+          }
+        ]
+      },
+      "autotheme": {
+        "order": 4.02,
+        "text": "ui_autotheme",
+        "type": "bool",
+        "value": false
+      },
+      "darkstarthour": {
+        "order": 4.04,
+        "text": "ui_darkstarthour",
+        "type": "slider",
+        "value": 19,
+        "min": 0,
+        "max": 23,
+        "step": 1,
+        "precision": 0,
+        "condition": "autotheme.value == true"
+      },
+      "darkstartminute": {
+        "order": 4.05,
+        "text": "ui_darkstartminute",
+        "type": "slider",
+        "value": 0,
+        "min": 0,
+        "max": 59,
+        "step": 1,
+        "precision": 0,
+        "condition": "autotheme.value == true"
+      },
+      "lightstarthour": {
+        "order": 4.06,
+        "text": "ui_lightstarthour",
+        "type": "slider",
+        "value": 7,
+        "min": 0,
+        "max": 23,
+        "step": 1,
+        "precision": 0,
+        "condition": "autotheme.value == true"
+      },
+      "lightstartminute": {
+        "order": 4.07,
+        "text": "ui_lightstartminute",
+        "type": "slider",
+        "value": 0,
+        "min": 0,
+        "max": 59,
+        "step": 1,
+        "precision": 0,
+        "condition": "autotheme.value == true"
+      },
+      "rhythmstyle": {
+        "order": 33,
+        "text": "ui_rhythmstyle",
+        "type": "combo",
+        "value": "legacy",
+        "options": [
+          {
+            "label": "ui_rhythmstyle_0",
+            "value": "legacy"
+          },
+          {
+            "label": "ui_rhythmstyle_1",
+            "value": "wave"
+          },
+          {
+            "label": "ui_rhythmstyle_2",
+            "value": "lift"
+          }
+        ],
+        "condition": "desktopmode.value == 'workbench' && audioreactive.value == true"
+      },
+      "archivecoverage": {
+        "order": 5,
+        "text": "ui_archivecoverage",
+        "type": "combo",
+        "value": "standard",
+        "options": [
+          {
+            "label": "ui_archivecoverage_0",
+            "value": "standard"
+          },
+          {
+            "label": "ui_archivecoverage_1",
+            "value": "extra"
+          }
+        ]
+      },
+      "groupvisualeffects": {
+        "order": 40,
+        "text": "HUD 与画面质感 | HUD & screen effects",
+        "type": "group"
+      },
+      "hudparallax": {
+        "order": 41,
+        "text": "ui_hudparallax",
+        "type": "bool",
+        "value": false
+      },
+      "huddepth": {
+        "order": 42,
+        "text": "ui_huddepth",
+        "type": "slider",
+        "value": 20,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "condition": "hudparallax.value == true"
+      },
+      "screenfinish": {
+        "order": 44,
+        "text": "ui_screenfinish",
+        "type": "bool",
+        "value": false
+      },
+      "screengrain": {
+        "order": 45,
+        "text": "ui_screengrain",
+        "type": "slider",
+        "value": 20,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "condition": "screenfinish.value == true"
+      },
+      "screenfringe": {
+        "order": 47,
+        "text": "ui_screenfringe",
+        "type": "slider",
+        "value": 20,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "condition": "screenfinish.value == true"
+      },
+      "screenvignette": {
+        "order": 48,
+        "text": "ui_screenvignette",
+        "type": "slider",
+        "value": 20,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "condition": "screenfinish.value == true"
+      },
+      "uifrost": {
+        "order": 49,
+        "text": "ui_uifrost",
+        "type": "bool",
+        "value": false
+      },
+      "uifroststrength": {
+        "order": 50,
+        "text": "ui_uifroststrength",
+        "type": "slider",
+        "value": 55,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "condition": "uifrost.value == true"
+      },
+      "hudtracking": {
+        "order": 43,
+        "text": "ui_hudtracking",
+        "type": "bool",
+        "value": true,
+        "condition": "hudparallax.value == true"
+      },
+      "screengrainsize": {
+        "order": 46,
+        "text": "ui_screengrainsize",
+        "type": "slider",
+        "value": 20,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "condition": "screenfinish.value == true"
+      },
+      "groupuimargins": {
+        "order": 51,
+        "text": "界面边距 · 正值内收 / 负值外扩 | UI margins: + in / − out",
+        "type": "group"
+      },
+      "uimargintop": {
+        "order": 52,
+        "text": "ui_uimargintop",
+        "type": "slider",
+        "value": 0,
+        "min": -300,
+        "max": 300,
+        "step": 1
+      },
+      "uimarginbottom": {
+        "order": 53,
+        "text": "ui_uimarginbottom",
+        "type": "slider",
+        "value": 0,
+        "min": -300,
+        "max": 300,
+        "step": 1
+      },
+      "uimarginleft": {
+        "order": 54,
+        "text": "ui_uimarginleft",
+        "type": "slider",
+        "value": 0,
+        "min": -300,
+        "max": 300,
+        "step": 1
+      },
+      "uimarginright": {
+        "order": 55,
+        "text": "ui_uimarginright",
+        "type": "slider",
+        "value": 0,
+        "min": -300,
+        "max": 300,
+        "step": 1
+      },
+      "groupcapabilities": {
+        "order": 56,
+        "text": "工作台 · 可用功能 | Workspace · Available tools",
+        "type": "group",
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "enabletime": {
+        "order": 57,
+        "text": "ui_enabletime",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "enabletasks": {
+        "order": 58,
+        "text": "ui_enabletasks",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "enableevent": {
+        "order": 59,
+        "text": "ui_enableevent",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "enablemedia": {
+        "order": 60,
+        "text": "ui_enablemedia",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "enablefocus": {
+        "order": 61,
+        "text": "ui_enablefocus",
+        "type": "bool",
+        "value": true,
+        "condition": "desktopmode.value == 'workbench'"
+      },
+      "selectedindexaccent": {
+        "order": 4.5,
+        "text": "ui_selectedindexaccent",
+        "type": "bool",
+        "value": false,
+        "condition": "colortheme.value == 'dark'"
+      },
+      "superperformance": {
+        "order": 5.5,
+        "text": "ui_superperformance",
+        "type": "bool",
+        "value": false
+      },
+      "qualityscale": {
+        "order": 6.02,
+        "text": "ui_qualityscale",
+        "type": "slider",
+        "value": 100,
+        "min": 50,
+        "max": 200,
+        "step": 5,
+        "condition": "renderquality.value == 'custom' && superperformance.value == false"
+      },
+      "qualitypixelratio": {
+        "order": 6.03,
+        "text": "ui_qualitypixelratio",
+        "type": "combo",
+        "value": "1.5",
+        "options": [
+          {
+            "value": "1",
+            "label": "ui_qualitypixelratio_0"
+          },
+          {
+            "value": "1.5",
+            "label": "ui_qualitypixelratio_1"
+          },
+          {
+            "value": "2",
+            "label": "ui_qualitypixelratio_2"
+          },
+          {
+            "value": "3",
+            "label": "ui_qualitypixelratio_3"
+          }
+        ],
+        "condition": "renderquality.value == 'custom' && superperformance.value == false"
+      },
+      "qualityantialias": {
+        "order": 6.04,
+        "text": "ui_qualityantialias",
+        "type": "combo",
+        "value": "off",
+        "options": [
+          {
+            "value": "off",
+            "label": "ui_qualityantialias_0"
+          },
+          {
+            "value": "smaa",
+            "label": "ui_qualityantialias_1"
+          }
+        ],
+        "condition": "renderquality.value == 'custom' && superperformance.value == false"
+      },
+      "qualityshadows": {
+        "order": 6.05,
+        "text": "ui_qualityshadows",
+        "type": "combo",
+        "value": "2048",
+        "options": [
+          {
+            "value": "0",
+            "label": "ui_qualityshadows_0"
+          },
+          {
+            "value": "1024",
+            "label": "ui_qualityshadows_1"
+          },
+          {
+            "value": "2048",
+            "label": "ui_qualityshadows_2"
+          },
+          {
+            "value": "4096",
+            "label": "ui_qualityshadows_3"
+          }
+        ],
+        "condition": "renderquality.value == 'custom' && superperformance.value == false"
+      },
+      "qualityaosamples": {
+        "order": 6.06,
+        "text": "ui_qualityaosamples",
+        "type": "combo",
+        "value": "32",
+        "options": [
+          {
+            "value": "0",
+            "label": "ui_qualityaosamples_0"
+          },
+          {
+            "value": "16",
+            "label": "ui_qualityaosamples_1"
+          },
+          {
+            "value": "32",
+            "label": "ui_qualityaosamples_2"
+          },
+          {
+            "value": "64",
+            "label": "ui_qualityaosamples_3"
+          }
+        ],
+        "condition": "renderquality.value == 'custom' && superperformance.value == false"
+      },
+      "qualityaoresolution": {
+        "order": 6.07,
+        "text": "ui_qualityaoresolution",
+        "type": "combo",
+        "value": "1",
+        "options": [
+          {
+            "value": "0.5",
+            "label": "ui_qualityaoresolution_0"
+          },
+          {
+            "value": "0.75",
+            "label": "ui_qualityaoresolution_1"
+          },
+          {
+            "value": "1",
+            "label": "ui_qualityaoresolution_2"
+          }
+        ],
+        "condition": "renderquality.value == 'custom' && superperformance.value == false"
+      },
+      "qualitydepthoffield": {
+        "order": 6.08,
+        "text": "ui_qualitydepthoffield",
+        "type": "slider",
+        "value": 100,
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "condition": "renderquality.value == 'custom' && superperformance.value == false"
+      },
+      "qualitytransmission": {
+        "order": 6.09,
+        "text": "ui_qualitytransmission",
+        "type": "combo",
+        "value": "1",
+        "options": [
+          {
+            "value": "0.25",
+            "label": "ui_qualitytransmission_0"
+          },
+          {
+            "value": "0.5",
+            "label": "ui_qualitytransmission_1"
+          },
+          {
+            "value": "0.75",
+            "label": "ui_qualitytransmission_2"
+          },
+          {
+            "value": "1",
+            "label": "ui_qualitytransmission_3"
+          }
+        ],
+        "condition": "renderquality.value == 'custom' && superperformance.value == false"
+      },
+      "qualityanisotropy": {
+        "order": 6.1,
+        "text": "ui_qualityanisotropy",
+        "type": "combo",
+        "value": "16",
+        "options": [
+          {
+            "value": "1",
+            "label": "ui_qualityanisotropy_0"
+          },
+          {
+            "value": "2",
+            "label": "ui_qualityanisotropy_1"
+          },
+          {
+            "value": "4",
+            "label": "ui_qualityanisotropy_2"
+          },
+          {
+            "value": "8",
+            "label": "ui_qualityanisotropy_3"
+          },
+          {
+            "value": "16",
+            "label": "ui_qualityanisotropy_4"
+          }
+        ],
+        "condition": "renderquality.value == 'custom' && superperformance.value == false"
+      },
+      "customwallpaper": {
+        "order": 6.2,
+        "text": "ui_customwallpaper",
+        "type": "bool",
+        "value": false
+      },
+      "customwallpapermask": {
+        "order": 6.22,
+        "text": "ui_customwallpapermask",
+        "type": "slider",
+        "value": 100,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "condition": "customwallpaper.value == true"
+      },
+      "customwallpaperfile": {
+        "order": 6.21,
+        "text": "ui_customwallpaperfile",
+        "type": "file",
+        "value": "",
+        "condition": "customwallpaper.value == true"
+      },
+      "modelprecision": {
+        "order": 6.95,
+        "text": "ui_modelprecision",
+        "type": "combo",
+        "value": "high",
+        "options": [
+          {
+            "label": "ui_modelprecision_0",
+            "value": "high"
+          },
+          {
+            "label": "ui_modelprecision_1",
+            "value": "medium"
+          },
+          {
+            "label": "ui_modelprecision_2",
+            "value": "low"
+          }
+        ]
+      }
+    },
+    "localization": {
+      "en-us": {
+        "ui_language": "Language / 语言",
+        "ui_language_0": "简体中文",
+        "ui_language_1": "English",
+        "ui_desktopmode": "Workspace mode",
+        "ui_desktopmode_0": "Desktop workspace",
+        "ui_desktopmode_1": "Archive display",
+        "ui_sessionname": "Login name (opening, footer and access log; up to 24 characters)",
+        "ui_boot": "Play opening on startup (applies on next load)",
+        "ui_load3donstartup": "Load 3D on startup (applies on next load)",
+        "ui_openingdetail": "Show archive details during opening (applies next opening)",
+        "ui_openingdetail_0": "Follow workspace mode (skip in workspace, play in archive display)",
+        "ui_openingdetail_1": "Show details",
+        "ui_openingdetail_2": "Skip details, stop at array",
+        "ui_renderquality": "Graphics quality",
+        "ui_renderquality_0": "Performance",
+        "ui_renderquality_1": "Original",
+        "ui_renderquality_2": "High",
+        "ui_renderquality_3": "Ultra",
+        "ui_renderquality_4": "Custom",
+        "ui_reduced": "Reduce motion",
+        "ui_showclock": "Show time & date",
+        "ui_showtasks": "Show today's tasks",
+        "ui_showmodule": "Show right-side content",
+        "ui_shownavigation": "Show bottom navigation",
+        "ui_showbrand": "Show brand lettering",
+        "ui_showfooter": "Show footer",
+        "ui_selectionstyle": "Selected archive height",
+        "ui_selectionstyle_0": "Original height",
+        "ui_selectionstyle_1": "Align during audio response",
+        "ui_selectionstyle_2": "Always aligned",
+        "ui_idlebreathing": "Idle breathing (also works when always aligned)",
+        "ui_task1": "Today's task 1",
+        "ui_task2": "Today's task 2",
+        "ui_task3": "Today's task 3",
+        "ui_eventname": "Event name",
+        "ui_eventdate": "Target date (YYYY-MM-DD, optional HH:mm; local time)",
+        "ui_focusminutes": "Focus duration (minutes; applies next session)",
+        "ui_breakminutes": "Break duration (minutes; applies next session)",
+        "ui_sound": "Interaction sounds",
+        "ui_soundvolume": "Sound volume",
+        "ui_music": "Background music",
+        "ui_musicvolume": "Music volume",
+        "ui_audioreactive": "Enable audio response (system audio)",
+        "ui_reactiveintensity": "Audio response intensity",
+        "ui_reactivemute": "Mute wallpaper music while audio response is enabled",
+        "ui_showgame": "Show game entry",
+        "ui_gamepace": "Relay pace (applies to the next target)",
+        "ui_gamepace_0": "Gentle",
+        "ui_gamepace_1": "Normal",
+        "ui_gamepace_2": "Fast",
+        "ui_colortheme": "Color theme",
+        "ui_colortheme_0": "Light · Frosted white",
+        "ui_colortheme_1": "Dark · Graphite",
+        "ui_autotheme": "Schedule light/dark theme (overrides manual changes at the next scheduled time)",
+        "ui_darkstarthour": "Switch to dark · Hour (0–23)",
+        "ui_darkstartminute": "Switch to dark · Minute",
+        "ui_lightstarthour": "Switch to light · Hour (0–23)",
+        "ui_lightstartminute": "Switch to light · Minute",
+        "ui_rhythmstyle": "Audio response style",
+        "ui_rhythmstyle_0": "Original · Layered motion",
+        "ui_rhythmstyle_1": "Continuous spectrum · Bass left, mids center, treble right",
+        "ui_rhythmstyle_2": "Continuous layered waves",
+        "ui_archivecoverage": "Array coverage margin",
+        "ui_archivecoverage_0": "Automatic · Standard margin",
+        "ui_archivecoverage_1": "Automatic · Extra margin",
+        "ui_hudparallax": "Curved UI parallax",
+        "ui_huddepth": "Curvature depth",
+        "ui_screenfinish": "Global screen effects",
+        "ui_screengrain": "Fine grain",
+        "ui_screenfringe": "Chromatic aberration",
+        "ui_screenvignette": "Vignette",
+        "ui_uifrost": "Frosted backing for text & buttons",
+        "ui_uifroststrength": "Frost intensity",
+        "ui_hudtracking": "Mouse tracking",
+        "ui_screengrainsize": "Grain size",
+        "ui_uimargintop": "Top margin (px)",
+        "ui_uimarginbottom": "Bottom margin (px)",
+        "ui_uimarginleft": "Left margin (px)",
+        "ui_uimarginright": "Right margin (px)",
+        "ui_enabletime": "Enable time & date",
+        "ui_enabletasks": "Enable today's tasks",
+        "ui_enableevent": "Enable upcoming event",
+        "ui_enablemedia": "Enable now playing",
+        "ui_enablefocus": "Enable focus timer",
+        "ui_selectedindexaccent": "Dark theme: accent only the selected archive label",
+        "ui_superperformance": "Super performance mode (keeps animations)",
+        "ui_qualityscale": "Custom · 3D render scale (%)",
+        "ui_qualitypixelratio": "Custom · Pixel density limit",
+        "ui_qualitypixelratio_0": "1×",
+        "ui_qualitypixelratio_1": "1.5×",
+        "ui_qualitypixelratio_2": "2×",
+        "ui_qualitypixelratio_3": "3×",
+        "ui_qualityantialias": "Custom · Anti-aliasing",
+        "ui_qualityantialias_0": "Original",
+        "ui_qualityantialias_1": "SMAA",
+        "ui_qualityshadows": "Custom · Shadow resolution",
+        "ui_qualityshadows_0": "Off",
+        "ui_qualityshadows_1": "1024",
+        "ui_qualityshadows_2": "2048",
+        "ui_qualityshadows_3": "4096",
+        "ui_qualityaosamples": "Custom · Ambient occlusion samples",
+        "ui_qualityaosamples_0": "Off",
+        "ui_qualityaosamples_1": "16 samples",
+        "ui_qualityaosamples_2": "32 samples",
+        "ui_qualityaosamples_3": "64 samples",
+        "ui_qualityaoresolution": "Custom · Occlusion resolution",
+        "ui_qualityaoresolution_0": "50%",
+        "ui_qualityaoresolution_1": "75%",
+        "ui_qualityaoresolution_2": "100%",
+        "ui_qualitydepthoffield": "Custom · Depth of field strength (%)",
+        "ui_qualitytransmission": "Custom · Transparent material resolution",
+        "ui_qualitytransmission_0": "25%",
+        "ui_qualitytransmission_1": "50%",
+        "ui_qualitytransmission_2": "75%",
+        "ui_qualitytransmission_3": "100%",
+        "ui_qualityanisotropy": "Custom · Texture filtering",
+        "ui_qualityanisotropy_0": "1×",
+        "ui_qualityanisotropy_1": "2×",
+        "ui_qualityanisotropy_2": "4×",
+        "ui_qualityanisotropy_3": "8×",
+        "ui_qualityanisotropy_4": "16×",
+        "ui_customwallpaper": "Show custom wallpaper when 3D is off",
+        "ui_customwallpapermask": "Top/bottom mask coverage (0 disables it)",
+        "ui_customwallpaperfile": "Custom wallpaper image",
+        "ui_modelprecision": "Model detail (360° viewer always uses the full model)",
+        "ui_modelprecision_0": "High · Original model",
+        "ui_modelprecision_1": "Medium · Simplified background",
+        "ui_modelprecision_2": "Low · Simplified background and foreground"
+      },
+      "zh-chs": {
+        "ui_language": "语言 / Language",
+        "ui_language_0": "简体中文",
+        "ui_language_1": "English",
+        "ui_desktopmode": "工作模式",
+        "ui_desktopmode_0": "桌面工作台",
+        "ui_desktopmode_1": "档案展示",
+        "ui_sessionname": "登录人姓名（开场身份确认、页脚与访问记录，最多 24 字符）",
+        "ui_boot": "启动时播放开场（下次加载生效）",
+        "ui_load3donstartup": "启动时加载 3D（下次加载生效）",
+        "ui_openingdetail": "入场时展示档案详情（下次开场生效）",
+        "ui_openingdetail_0": "随工作模式（工作台跳过，展示模式播放）",
+        "ui_openingdetail_1": "展示详情",
+        "ui_openingdetail_2": "跳过详情，停留在阵列",
+        "ui_renderquality": "画质",
+        "ui_renderquality_0": "性能",
+        "ui_renderquality_1": "原始",
+        "ui_renderquality_2": "高",
+        "ui_renderquality_3": "极高",
+        "ui_renderquality_4": "自定义",
+        "ui_reduced": "减少动态效果",
+        "ui_showclock": "显示时钟与日期",
+        "ui_showtasks": "显示今日事项",
+        "ui_showmodule": "显示右侧功能内容",
+        "ui_shownavigation": "显示底部功能导航",
+        "ui_showbrand": "显示品牌文字",
+        "ui_showfooter": "显示页脚信息",
+        "ui_selectionstyle": "选中档案高度",
+        "ui_selectionstyle_0": "保持原样",
+        "ui_selectionstyle_1": "仅音乐律动时归齐",
+        "ui_selectionstyle_2": "始终归齐",
+        "ui_idlebreathing": "静止时呼吸（始终归齐时也生效）",
+        "ui_task1": "今日事项 1",
+        "ui_task2": "今日事项 2",
+        "ui_task3": "今日事项 3",
+        "ui_eventname": "重要日程名称",
+        "ui_eventdate": "目标日期（YYYY-MM-DD，可加 HH:mm，本地时间）",
+        "ui_focusminutes": "专注时长（分钟，下次开始生效）",
+        "ui_breakminutes": "休息时长（分钟，下次开始生效）",
+        "ui_sound": "交互音效",
+        "ui_soundvolume": "音效音量",
+        "ui_music": "背景音乐",
+        "ui_musicvolume": "音乐音量",
+        "ui_audioreactive": "开启音乐律动（跟随系统音频）",
+        "ui_reactiveintensity": "音乐律动强度",
+        "ui_reactivemute": "音乐律动开启时停用壁纸配乐",
+        "ui_showgame": "显示游戏入口",
+        "ui_gamepace": "波纹接力节奏（下一目标生效）",
+        "ui_gamepace_0": "舒缓",
+        "ui_gamepace_1": "标准",
+        "ui_gamepace_2": "快速",
+        "ui_colortheme": "界面配色",
+        "ui_colortheme_0": "亮色 · 磨砂白",
+        "ui_colortheme_1": "暗色 · 石墨灰",
+        "ui_autotheme": "按时间自动切换明暗（手动切换会在下一个时间点被覆盖）",
+        "ui_darkstarthour": "切换为暗色 · 时（0-23）",
+        "ui_darkstartminute": "切换为暗色 · 分",
+        "ui_lightstarthour": "切换为亮色 · 时（0-23）",
+        "ui_lightstartminute": "切换为亮色 · 分",
+        "ui_rhythmstyle": "音乐律动方案",
+        "ui_rhythmstyle_0": "原版 · 多层起伏",
+        "ui_rhythmstyle_1": "方案 A · 左低中中右高频谱",
+        "ui_rhythmstyle_2": "方案 B · 连续层叠流波",
+        "ui_archivecoverage": "阵列覆盖余量",
+        "ui_archivecoverage_0": "自动 · 标准余量",
+        "ui_archivecoverage_1": "自动 · 额外余量",
+        "ui_hudparallax": "UI 鼠标视差",
+        "ui_huddepth": "曲面纵深",
+        "ui_screenfinish": "全局屏幕效果",
+        "ui_screengrain": "细颗粒",
+        "ui_screenfringe": "边缘色散",
+        "ui_screenvignette": "暗角",
+        "ui_uifrost": "文字与按钮磨砂底",
+        "ui_uifroststrength": "磨砂强度",
+        "ui_hudtracking": "鼠标追踪",
+        "ui_screengrainsize": "颗粒尺寸",
+        "ui_uimargintop": "上边距（px）",
+        "ui_uimarginbottom": "下边距（px）",
+        "ui_uimarginleft": "左边距（px）",
+        "ui_uimarginright": "右边距（px）",
+        "ui_enabletime": "启用时间日期",
+        "ui_enabletasks": "启用今日事项",
+        "ui_enableevent": "启用重要日程",
+        "ui_enablemedia": "启用正在播放",
+        "ui_enablefocus": "启用专注计时",
+        "ui_selectedindexaccent": "暗色模式仅选中档案标签使用强调色",
+        "ui_superperformance": "超级性能模式（保留动态效果）",
+        "ui_qualityscale": "自定义 · 三维渲染比例（%）",
+        "ui_qualitypixelratio": "自定义 · 像素密度上限",
+        "ui_qualitypixelratio_0": "1×",
+        "ui_qualitypixelratio_1": "1.5×",
+        "ui_qualitypixelratio_2": "2×",
+        "ui_qualitypixelratio_3": "3×",
+        "ui_qualityantialias": "自定义 · 抗锯齿",
+        "ui_qualityantialias_0": "原始",
+        "ui_qualityantialias_1": "SMAA",
+        "ui_qualityshadows": "自定义 · 阴影分辨率",
+        "ui_qualityshadows_0": "关闭",
+        "ui_qualityshadows_1": "1024",
+        "ui_qualityshadows_2": "2048",
+        "ui_qualityshadows_3": "4096",
+        "ui_qualityaosamples": "自定义 · 环境遮蔽采样",
+        "ui_qualityaosamples_0": "关闭",
+        "ui_qualityaosamples_1": "16 采样",
+        "ui_qualityaosamples_2": "32 采样",
+        "ui_qualityaosamples_3": "64 采样",
+        "ui_qualityaoresolution": "自定义 · 遮蔽分辨率",
+        "ui_qualityaoresolution_0": "50%",
+        "ui_qualityaoresolution_1": "75%",
+        "ui_qualityaoresolution_2": "100%",
+        "ui_qualitydepthoffield": "自定义 · 景深强度（%）",
+        "ui_qualitytransmission": "自定义 · 透明材质分辨率",
+        "ui_qualitytransmission_0": "25%",
+        "ui_qualitytransmission_1": "50%",
+        "ui_qualitytransmission_2": "75%",
+        "ui_qualitytransmission_3": "100%",
+        "ui_qualityanisotropy": "自定义 · 纹理过滤",
+        "ui_qualityanisotropy_0": "1×",
+        "ui_qualityanisotropy_1": "2×",
+        "ui_qualityanisotropy_2": "4×",
+        "ui_qualityanisotropy_3": "8×",
+        "ui_qualityanisotropy_4": "16×",
+        "ui_customwallpaper": "关闭 3D 后显示自定义壁纸",
+        "ui_customwallpapermask": "上下遮罩范围（0 为关闭）",
+        "ui_customwallpaperfile": "自定义壁纸图片",
+        "ui_modelprecision": "模型精度（360° 拆解查看器保留完整模型）",
+        "ui_modelprecision_0": "高 · 原始模型",
+        "ui_modelprecision_1": "中 · 简化背景细节",
+        "ui_modelprecision_2": "低 · 简化背景与近景细节"
+      }
+    }
+  },
+  "workshopurl": "steam://url/CommunityFilePage/3799142774",
+  "ratingsex": "none",
+  "ratingviolence": "none",
+  "version": 1
+}

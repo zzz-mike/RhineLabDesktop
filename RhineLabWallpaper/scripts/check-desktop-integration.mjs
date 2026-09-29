@@ -1,0 +1,90 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { build } from 'esbuild';
+
+globalThis.location = { search: '?mac=1', origin: 'http://127.0.0.1:5180' };
+globalThis.window = new EventTarget();
+async function load(...paths) {
+  const result = await build({ stdin: { contents: paths.map(path => `export * from './${path}';`).join('\n'), resolveDir: process.cwd() }, bundle: true, write: false, format: 'esm', platform: 'node' });
+  return import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
+}
+const data = await load('src/data.ts', 'src/archive-loop.ts');
+const nav = await load('src/desktop-navigation.ts');
+const files = await load('src/desktop-files.ts');
+const file = (id, name, kind = 'file') => ({ id, name, path: name, kind, size: 30, version: 'v3:30:1', modified_at: '2026-09-24T00:00:00Z', summary: { status: 'partial', text: '<script>not executable</script>', is_ai: false, index_synced_at: 'old' } });
+const catalog = { schema_version: '1.0', status: 'ok', root_label: '桌面', generated_at: 'now', columns: [
+  { id: 'c1', title: '文件夹A', directory: file('c1', '文件夹A', 'directory'), entries: [file('real-a', 'A.pdf'), file('real-b', '嵌套', 'directory')], total: 2, truncated: false },
+  { id: 'c2', title: '空文件夹', directory: file('c2', '空文件夹', 'directory'), entries: [], total: 0, truncated: false },
+  { id: 'desktop:loose-files', title: '桌面散文件', directory: file('root', '桌面', 'directory'), entries: [file('loose-a', '散文件.txt')], total: 1, truncated: false },
+] };
+assert.equal(data.records[0].placeholder, true, 'Mac starts with an honest unavailable state, not demo records');
+data.applyDesktopCatalog(catalog);
+assert.deepEqual(data.archiveColumns, ['文件夹A', '空文件夹', '桌面散文件']);
+assert.deepEqual(data.columnFiles(0), [0, 1]);
+assert.deepEqual(data.columnFiles(1), [2]);
+assert.equal(data.fileAtCell({lane:0,row:12}), 0, 'The actual 3D loop resolves the real first child');
+assert.equal(data.fileAtCell({lane:0,row:13}), 1);
+assert.equal(data.fileAtCell({lane:1,row:12}), 2);
+assert.equal(data.fileAtCell({lane:3,row:13}), 1, 'Looping repeats real cards, never a demo record');
+assert.equal(data.records[2].id, 'c2', 'Empty folder represents the actual directory itself, never an invented child');
+assert.equal(data.records[1].file.kind, 'directory');
+assert.deepEqual(data.fileLocation(3), { lane: 2, row: 12, slot: 76 });
+assert.equal(data.archiveDisplayNumber(1), '002');
+const renamed = structuredClone(catalog);
+renamed.columns[0].entries[0].name = '改名.pdf';
+renamed.columns[0].entries.reverse();
+renamed.columns[0].entries.push(file('new-file', '新增.txt'));
+data.applyDesktopCatalog(renamed);
+assert.equal(data.records[1].id, 'real-a', 'Rename and reorder preserve host identity');
+assert.equal(data.records[1].title, '改名.pdf');
+assert.equal(data.archiveDisplayNumber(data.records.findIndex(r => r.id === 'real-a')), '002', 'Displayed number is derived from current order');
+renamed.columns[0].entries.splice(1, 1);
+data.applyDesktopCatalog(renamed);
+assert.ok(!data.records.some(r => r.id === 'real-a'), 'Removed items do not leave ghost records');
+assert.equal(data.records[1].id, 'new-file');
+assert.equal(data.archiveDisplayNumber(1), '002');
+const timeChanged = structuredClone(catalog); timeChanged.generated_at = 'later'; timeChanged.columns[0].entries[0].summary.index_synced_at = 'later';
+assert.equal(files.catalogSignature(timeChanged), files.catalogSignature(catalog), 'Index scan time alone must not trigger a 3D rebuild');
+timeChanged.columns[0].entries[0].version = 'v3:30:2';
+assert.notEqual(files.catalogSignature(timeChanged), files.catalogSignature(catalog));
+data.setDesktopUnavailable('连接失败'); assert.equal(data.records[0].placeholder, true); assert.equal(data.records.length, 1);
+assert.equal(files.safePreviewContent('/api/desktop/v1/content?token=one'), 'http://127.0.0.1:5180/api/desktop/v1/content?token=one');
+for (const url of ['https://evil.test/api/desktop/v1/content?token=one', 'javascript:alert(1)', '/api/desktop/v1/action?token=one', '/api/desktop/v1/content']) assert.equal(files.safePreviewContent(url), null);
+for (const url of ['javascript:alert(1)', 'file:///Users/private', 'data:text/html,test', 'http://127.0.0.1:5180/', 'http://localhost:5180/', 'http://[::1]:5180/', 'http://user:pass@safe.test/', 'http://safe.test/api/local/v1/capabilities']) assert.equal(nav.safeWebsiteUrl(url, location.origin), null, url);
+assert.equal(nav.safeWebsiteUrl('http://127.0.0.1:8765/', location.origin), 'http://127.0.0.1:8765/');
+const pages = nav.restoreWebsites([{ id: 'site:one', name: '  监测  ', url: 'http://127.0.0.1:8765/', mode: 'embedded' }, { id: 'site:one', name: '重复', url: 'https://x.test' }, { id: 'site:bad', name: 'bad', url: 'javascript:a' }], location.origin);
+assert.equal(pages.length, 1); assert.equal(pages[0].name, '监测');
+const gesture = new nav.PageGesture();
+assert.equal(gesture.push(30, 2, 1000, true), 0); assert.equal(gesture.push(40, 2, 1020, true), 1);
+assert.equal(gesture.push(100, 0, 1050, true), 0, 'Momentum cannot advance again');
+assert.equal(gesture.push(-80, 2, 1500, true), -1);
+assert.equal(gesture.push(100, 0, 2000, false), 0, 'Inputs and inner scroll must not navigate');
+assert.equal(gesture.push(10, 100, 2500, true), 0, 'Vertical scroll preserved');
+assert.equal(gesture.push(100, 0, 3000, true, 1), 0, 'Mouse line scrolling not treated as trackpad');
+const preview = await readFile('src/desktop-preview.ts', 'utf8');
+assert.ok(!preview.includes('innerHTML =')); assert.ok(preview.includes('new PdfCanvasPreview(content, url, file.name)')); assert.ok(!preview.includes("element('iframe')"));
+const pagesSource = await readFile('src/desktop-pages.ts', 'utf8');
+assert.ok(pagesSource.includes("'allow-scripts allow-forms allow-popups'")); assert.ok(!pagesSource.includes('allow-same-origin')); assert.ok(!pagesSource.includes("addEventListener('message'"));
+assert.ok(pagesSource.includes("this.informationRoot.dataset.widgetEditing === 'true'"), 'Editing must block gestures even over the navigation');
+const main = await readFile('src/main.ts', 'utf8');
+assert.match(main, /releaseThree\(\); }\s*applyDesktopCatalog\(catalog\)/, 'Live map changes release old 3D state before replacing identities');
+const marker = await readFile('src/index-marker.ts', 'utf8'); assert.ok(marker.includes('archiveDisplayNumber(i)')); assert.ok(!marker.includes('content.records'));
+const manyColumns = Array.from({length:13}, (_, lane) => ({id:`column:${lane}`,title:`真实列${lane + 1}`,directory:file(`dir:${lane}`,`目录${lane}`,'directory'),entries:Array.from({length:lane === 0 ? 80 : lane + 1}, (_, row) => file(`real:${lane}:${row}`,`文件${row}`)),total:lane === 0 ? 80 : lane + 1,truncated:false}));
+data.applyDesktopCatalog({...catalog, columns:manyColumns});
+const slots = new Set();
+data.records.forEach((record, index) => {
+  const position = data.fileLocation(index);
+  assert.equal(data.fileAtSlot(position.slot), index, 'Long folders must round-trip canonical slot addresses');
+  assert.equal(data.fileAtCell(position), index);
+  assert.ok(!slots.has(position.slot), 'No slot collision across columns longer than 20 children'); slots.add(position.slot);
+  assert.equal(data.fileAtCell({lane:position.lane + 2600,row:position.row}), index, '13-column horizontal repetition preserves identity');
+});
+assert.equal(data.fileAtCell({lane:12,row:24}), data.records.length - 1, 'The last child of column 13 is reachable');
+assert.ok(main.includes("$('#column-total').textContent = String(archiveColumns.length)"));
+assert.ok(main.includes('macPreview ? archiveDisplayNumber(i) : r.id'));
+assert.ok(main.includes('macPreview ? escapeHtml(r.clearance)'));
+const scene = await readFile('src/scene.ts', 'utf8');
+assert.ok(scene.includes('(this.selectedCell.lane - 2) / archiveColumns.length'));
+assert.ok(scene.includes('!desktopArchiveMode && Math.abs(this.selectedCell.row) > 2048'));
+console.log('PASS: Desktop real-ID mapping, empty directories, nested identities, rename/reorder/delete, marker numbering, stale signatures, preview/website boundaries, and gesture lock.');
+console.log('PASS: 13 columns / 170 records, 80-child folder, unique reversible slots, final-column reachability and remote horizontal identity.');

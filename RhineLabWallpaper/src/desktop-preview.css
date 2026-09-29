@@ -1,0 +1,48 @@
+.desktop-preview { font-size: 16px; line-height: 1.6; overflow-wrap: anywhere; }
+.desktop-preview h3 { margin: 12px 0 4px; font-size: 22px; }
+.desktop-file-meta,.desktop-file-state,.desktop-file-summary small { color: #77766b; font-size: 13px; }
+.desktop-file-breadcrumbs { display:flex; flex-wrap:wrap; gap:8px; }
+.desktop-file-breadcrumbs button { border-bottom:1px solid currentColor; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.desktop-file-breadcrumbs button:disabled { opacity:.55; border:0; }
+.desktop-file-content { margin:14px 0; max-height:48vh; min-height:140px; overflow:auto; overscroll-behavior:contain; }
+.desktop-file-content pre { white-space:pre-wrap; font:14px/1.6 ui-monospace,monospace; user-select:text; }
+.desktop-file-content img { max-width:100%; max-height:45vh; object-fit:contain; display:block; }
+.desktop-pdf-controls { display:flex; align-items:center; justify-content:space-between; gap:10px; position:sticky; top:0; z-index:1; padding:8px 0; background:var(--paper,#e6e5df); }
+.desktop-pdf-controls button { border:1px solid #9998; border-radius:7px; padding:6px 12px; font-size:13px; }
+.desktop-pdf-controls button:disabled { opacity:.45; cursor:default; }
+.desktop-pdf-controls output { font-size:13px; white-space:nowrap; }
+.desktop-pdf-canvas { display:block; width:100%; height:auto; background:#fff; border:1px solid #aaa6; }
+.desktop-pdf-canvas[hidden] { display:none; }
+.desktop-file-summary { padding:14px 16px; border:1px solid #aaa6; border-radius:10px; margin:16px 0; background:#aaa1; }
+.desktop-file-summary h4 { margin:0; font-size:14px; }
+.desktop-file-summary p { margin:8px 0; white-space:pre-wrap; }
+.desktop-file-actions { display:flex; flex-wrap:wrap; gap:12px; }
+.desktop-file-actions button { border:1px solid #9998; border-radius:7px; padding:8px 12px; }
+.desktop-file-list button { display:grid; width:100%; grid-template-columns:24px 1fr auto; text-align:left; gap:12px; padding:12px 4px; border-bottom:1px solid #8883; align-items:center; }
+.desktop-file-list button small { font-size:11px; color:#777; }
+.desktop-file-list button:hover { background:#8881; }
+
+/* Mac real previews get the available reading space. The original fictional
+   archive typography/layout remains untouched outside this explicit class. */
+#detail-content.desktop-detail-content { top:150px; bottom:65px; max-height:none; height:auto; display:flex; flex-direction:column; overflow:hidden; }
+#detail-content.desktop-detail-content h2 { font-size:17px; letter-spacing:.08em; margin:12px 0 5px; }
+#detail-content.desktop-detail-content .detail-title-cn { font-size:24px; line-height:1.4; align-items:baseline; gap:12px; }
+#detail-content.desktop-detail-content .detail-rule { margin-top:10px; flex:none; }
+#detail-content.desktop-detail-content .detail-tabs { margin-top:14px; flex:none; }
+#detail-content.desktop-detail-content .detail-tabs button { min-height:32px; padding:5px 0 9px; }
+#detail-content.desktop-detail-content #tab-panel { flex:1; min-height:170px; height:auto; padding-top:12px; overflow:auto; overscroll-behavior:contain; }
+#detail-content.desktop-detail-content .detail-actions { margin-top:10px; flex:none; }
+#detail-content.desktop-detail-content .detail-footnote { margin-top:12px; flex:none; }
+#detail-content.desktop-detail-content #tab-panel p { text-align:left; line-height:1.55; margin:8px 0; }
+#detail-content.desktop-detail-content .desktop-preview h3 { margin:8px 0 4px; font-size:17px; }
+#detail-content.desktop-detail-content .desktop-file-content { max-height:none; min-height:160px; margin:8px 0 12px; overflow:visible; }
+#detail-content.desktop-detail-content .desktop-file-meta { font-size:12px; line-height:1.45; white-space:pre-wrap; }
+#detail-content.desktop-detail-content .desktop-file-breadcrumbs { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:thin; padding-bottom:3px; }
+#detail-content.desktop-detail-content .desktop-file-breadcrumbs button { flex:none; max-width:160px; font-size:12px; }
+#detail-content.desktop-detail-content .desktop-file-summary { margin:12px 0; padding:10px 12px; }
+#detail-content.desktop-detail-content .desktop-file-summary summary,.desktop-file-info summary { cursor:pointer; font-size:13px; line-height:1.6; }
+#detail-content.desktop-detail-content .desktop-file-info { margin:10px 0; }
+#detail-content.desktop-detail-content .desktop-file-state:empty { display:none; }
+#detail-content.desktop-detail-content .desktop-file-list button { grid-template-columns:20px minmax(0,1fr); gap:5px 9px; padding:9px 3px; }
+#detail-content.desktop-detail-content .desktop-file-list button small { grid-column:2; }
+[data-layout="portrait"] #detail-content.desktop-detail-content { top:42%; bottom:32px; }

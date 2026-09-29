@@ -1,0 +1,229 @@
+.iw-workbench {
+  width: min(1150px, calc(100vw - 48px));
+  max-height: 88vh;
+  box-sizing: border-box;
+  border: 1px solid #a7a49b;
+  border-radius: 20px;
+  padding: 24px;
+  background: var(--theme-paper, #f1efe8);
+  color: var(--theme-ink, #22251f);
+  font:
+    14px/1.6 MiSans,
+    "PingFang SC",
+    sans-serif;
+  overflow: auto;
+}
+.iw-workbench::backdrop {
+  background: #1e241b66;
+  backdrop-filter: blur(6px);
+}
+.iw-workbench * {
+  box-sizing: border-box;
+}
+.iw-workbench :is(button, input, select, textarea) {
+  font: inherit;
+  color: inherit;
+  min-height: 36px;
+  border: 1px solid #9997;
+  border-radius: 8px;
+  background: transparent;
+  padding: 6px 10px;
+}
+.iw-workbench button,
+.iw-workbench a {
+  cursor: pointer;
+}
+.iw-workbench button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.iw-workbench button:hover:not(:disabled),
+.iw-wb-tabs button[aria-pressed="true"] {
+  background: #88794c20;
+}
+.iw-workbench :focus-visible {
+  outline: 2px solid #9b7247;
+  outline-offset: 2px;
+}
+.iw-workbench [hidden] {
+  display: none !important;
+}
+.iw-wb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.iw-wb-header h2 {
+  font-size: 24px;
+  margin: 0;
+}
+.iw-wb-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0;
+}
+.iw-wb-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+}
+.iw-wb-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1 1 180px;
+}
+.iw-wb-controls input,
+.iw-wb-controls select {
+  width: 100%;
+}
+.iw-wb-status {
+  color: var(--theme-muted, #786b4f);
+  white-space: pre-wrap;
+}
+.iw-wb-content {
+  min-height: 120px;
+}
+.iw-wb-content[aria-busy="true"] {
+  opacity: 0.85;
+  transition: opacity 0.12s;
+}
+.iw-wb-rows {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+  gap: 14px;
+}
+.iw-wb-row {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #9995;
+  border-radius: 12px;
+}
+.iw-wb-row h3 {
+  font-size: 17px;
+  margin: 0 0 10px;
+}
+.iw-wb-row :is(p, dd) {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.iw-wb-row button,
+.iw-wb-row a {
+  display: inline-block;
+  margin: 8px 8px 0 0;
+}
+.iw-wb-prose {
+  line-height: 1.7;
+}
+.iw-workbench dl {
+  margin: 10px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 12px;
+}
+.iw-workbench dl > div {
+  min-width: 0;
+}
+.iw-workbench dt {
+  color: #7c796e;
+  font-size: 12px;
+}
+.iw-workbench dd {
+  margin: 0;
+}
+.iw-wb-pager {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+.iw-wb-editor:empty {
+  display: none;
+}
+.iw-wb-editor {
+  padding: 16px;
+  border: 1px solid #a07445;
+  margin: 18px 0;
+  border-radius: 12px;
+}
+.iw-wb-editor label {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+}
+.iw-wb-editor textarea {
+  width: 100%;
+  resize: vertical;
+}
+.iw-wb-editor button {
+  margin-right: 8px;
+}
+.iw-wb-conflict {
+  white-space: pre-wrap;
+  border-top: 1px solid #aaa5;
+}
+.iw-wb-solar-summary {
+  margin: 18px 0;
+}
+.iw-wb-chart .iw-chart-unit {
+  margin-bottom: 14px;
+}
+.iw-wb-chart svg {
+  max-height: 280px;
+}
+.iw-wb-chart .iw-chart-legend {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.iw-wb-chart .iw-chart-legend span {
+  color: var(--series-color);
+}
+@media (max-width: 700px) {
+  .iw-workbench {
+    width: calc(100vw - 16px);
+    padding: 16px;
+    max-height: 94vh;
+  }
+  .iw-wb-header h2 {
+    font-size: 20px;
+  }
+  .iw-wb-tabs {
+    gap: 5px;
+  }
+  .iw-wb-controls label {
+    flex-basis: 100%;
+  }
+}
+
+.iw-workbench {
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+.iw-wb-top {
+  position: sticky;
+  top: -24px;
+  z-index: 10;
+  background: var(--theme-paper, #f1efe8);
+  padding: 16px 0 4px;
+}
+.iw-wb-pager:not(:empty) {
+  position: sticky;
+  bottom: -24px;
+  z-index: 10;
+  background: var(--theme-paper, #f1efe8);
+  padding: 12px 0;
+  border-top: 1px solid #aaa5;
+}
+@media (max-width: 700px) {
+  .iw-wb-top {
+    top: -16px;
+  }
+  .iw-wb-pager:not(:empty) {
+    bottom: -16px;
+  }
+}

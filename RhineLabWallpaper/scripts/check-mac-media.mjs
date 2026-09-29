@@ -1,0 +1,10 @@
+import {build} from 'esbuild';import assert from 'node:assert/strict';
+await build({stdin:{contents:'export * from "./src/mac-media";',resolveDir:process.cwd()},bundle:true,platform:'node',format:'esm',packages:'external',outfile:'.tools/mac-media-check.mjs'});
+const {macMediaMarkup}=await import('../.tools/mac-media-check.mjs');
+const m={status:'ok',title:'<img src=x onerror=alert(1)>',source:'com.bilibili.bilibiliPC',playing:false,position_seconds:6,duration_seconds:25,playback_rate:0,observed_at:new Date().toISOString(),artwork_url:'javascript:alert(1)'};
+let html=macMediaMarkup(m);assert.ok(html.includes('&lt;img'));assert.ok(html.includes('哔哩哔哩'));assert.ok(html.includes('已暂停或停止'));assert.ok(html.includes('00:06'));assert.ok(!html.includes('<img src=x'));assert.ok(!html.includes('javascript:'));
+assert.ok(macMediaMarkup({...m,status:'idle',message:'无信息'}).includes('系统未提供'));
+assert.ok(macMediaMarkup({...m,status:'error',message:'连接失败'}).includes('暂时不可用'));
+assert.ok(macMediaMarkup({...m,playing:null,position_seconds:null}).includes('播放状态未提供'));
+assert.ok(!macMediaMarkup({...m,position_seconds:null}).includes('wb-rule'));
+console.log('PASS: escaped metadata, raster-only artwork, pause/unknown/idle/error distinctions, valid timeline');
