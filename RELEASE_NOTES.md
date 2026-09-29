@@ -18,7 +18,7 @@ Mac 接入版先显示授权管理：用户选择具体目录后才读取，预�
 
 ## 验证范围
 
-本地授权/桥接与纯展示服务测试、内容检查、两份生产构建和 ZIP 完整性校验均须通过后发布。Windows / macOS 自动化构建与展示服务验证见仓库 Actions；浏览器与系统选择器人工检查在 Mac 完成，不代表所有 Windows 硬件或 Wallpaper Engine 已实测。
+本地共 110 项服务与内容测试通过，两份生产构建和 ZIP 完整性校验通过。Windows / macOS 的 CI 构建及展示服务检查通过。Mac 浏览器展示、授权页面默认关闭、选择结果回显与撤销状态已检查；未完成所有原生选择器交互及授权后文件浏览的端到端人工验证，也未实测 Windows 桌面交互或 Wallpaper Engine。
 
 原项目：https://github.com/LBEILC/RhineLabWallpaper
 原作者：https://github.com/LBEILC
