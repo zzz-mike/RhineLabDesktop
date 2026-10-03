@@ -53,7 +53,7 @@ export function createDisplayServer({root}={}) {
     const port=server.address().port;
     if(!localRequest(req,port)){json(res,403,{error:'local_only'});return;}
     if(new URL(req.url,'http://localhost').pathname.startsWith('/api/')){json(res,404,{error:'display_has_no_local_integrations'});return;}
-    if(req.url==='/__rhine_health'){json(res,200,{edition:'display',version:'0.2.0',local_files:false});return;}
+    if(req.url==='/__rhine_health'){json(res,200,{edition:'display',version:'0.2.1',local_files:false});return;}
     await serveAssets(req,res,{root,inject:'<script>window.wallpaperPropertyListener?.applyUserProperties({desktopmode:{value:"workbench"},language:{value:"zh-CN"},audioreactive:{value:false},reactivemute:{value:false}});</script>'});
   });
   server.requestTimeout=10000;server.headersTimeout=10000;server.keepAliveTimeout=5000;return server;

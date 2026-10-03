@@ -6,7 +6,7 @@ import {createHash} from 'node:crypto';
 import {createZip,readZip} from '../RhineLabWallpaper/scripts/zip-utils.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const front=join(root,'RhineLabWallpaper'),out=join(root,'release');await mkdir(out,{recursive:true});
-const version='0.2.0';
+const version='0.2.1';
 const localFiles=['server.mjs','access.mjs','access-page.mjs','folder-picker.mjs','desktop-files.mjs','integration-bridge.mjs','solar-bridge.mjs','solar-fleet.mjs','media-state.mjs','choose-folder.m','bin/choose-folder'];
 const sums=[];
 async function walk(dir){const files=[];for(const entry of await readdir(dir,{withFileTypes:true})){const path=join(dir,entry.name);if(entry.isSymbolicLink())throw Error('No symlinks in distribution');if(entry.isDirectory())files.push(...await walk(path));else files.push(path);}return files.sort();}
@@ -18,6 +18,8 @@ for(const edition of ['display','local']) {
   execFileSync(npm,['run','build:wallpaper'],{cwd:front,stdio:'inherit',env:{...process.env,RHINE_EDITION:edition},shell:process.platform==='win32'});
   await cp(join(front,'release/wallpaper'),join(dir,'web'),{recursive:true});
   await mkdir(join(dir,'runtime'));await copyFile(join(root,'runtime/static-server.mjs'),join(dir,'runtime/static-server.mjs'));
+  await mkdir(join(dir,'docs'));await copyFile(join(root,'docs/LOCAL-AI-IMPORT.md'),join(dir,'docs/LOCAL-AI-IMPORT.md'));
+  await mkdir(join(dir,'tools'));await copyFile(join(root,'tools/local-ai-event-importer.mjs'),join(dir,'tools/local-ai-event-importer.mjs'));
   for(const file of ['LICENSE','ATTRIBUTION.md'])await copyFile(join(root,file),join(dir,file));
   await copyFile(join(root,'docs',edition==='display'?'DISPLAY.md':'MAC-LOCAL.md'),join(dir,'README.md'));
   if(edition==='local')for(const file of localFiles){const target=join(dir,'mac',file);await mkdir(dirname(target),{recursive:true});await copyFile(join(root,'mac',file),target);}

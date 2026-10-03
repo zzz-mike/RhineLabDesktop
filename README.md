@@ -4,16 +4,16 @@
 
 ## 选择下载版本
 
-**[前往 Releases 下载 v0.2.0](https://github.com/zzz-mike/RhineLabDesktop/releases/tag/v0.2.0)**
+**[前往 Releases 下载 v0.2.1](https://github.com/zzz-mike/RhineLabDesktop/releases/tag/v0.2.1)**
 
 | 下载包 | 支持系统 | 本地文件访问 |
 | --- | --- | --- |
-| **RhineLabDisplay-v0.2.0.zip**（推荐） | Windows / macOS，浏览器运行 | 不带文件接入服务；保留画质、动画、内置档案和基础工作台 |
-| **RhineLabMacLocal-v0.2.0.zip** | macOS 12+，Apple Silicon / Intel，浏览器运行 | 默认关闭；系统选择窗口授权具体目录后才读取 |
+| **RhineLabDisplay-v0.2.1.zip**（推荐） | Windows / macOS，浏览器运行 | 不带文件接入服务；保留画质、动画、内置档案和基础工作台 |
+| **RhineLabMacLocal-v0.2.1.zip** | macOS 12+，Apple Silicon / Intel，浏览器运行 | 默认关闭；系统选择窗口授权具体目录后才读取 |
 
 两个包共用画质与交互源码。纯展示包不附带 Mac 桥接代码，改网址参数不能开启文件访问。Mac 接入包默认关闭目录、文件打开、AI 秘书、光伏和媒体连接，分别由用户开启；停止服务后授权清空。
 
-Windows 用户不需要 AI 改代码：安装 Node.js，下载纯展示包即可使用。Mac 接入版的文件选择、打开文件和访达定位尚未适配 Windows；不要把它当作 Windows 完整版。
+Windows 用户不需要 AI 改代码：安装 Node.js，下载纯展示包即可使用。Mac 接入版的文件选择、打开文件和访达定位尚未适配 Windows；不要把它当作 Windows 完整版。若要把本地录音或转录资料交给本机 AI，请先看[本地 AI 与录音资料导入说明](docs/LOCAL-AI-IMPORT.md)；随包提供的导入适配器只连接本机回环地址，不负责录音或转录。
 
 ## 普通用户启动
 
@@ -80,4 +80,4 @@ npm run check:content
 
 `.github/workflows/verify.yml` 在 Windows 和 macOS 检查展示服务器、内容与前端构建，并在 macOS 检查授权及桥接。浏览器画面、系统选择窗口及不同硬件表现需与自动化检查分开看待。
 
-`RhineLabWallpaper/` 中保留原项目历史文档和链接；本修改版的版本选择、权限和启动方法以当前 README 为准。v0.1.0 属于旧的默认接入快照，新用户请使用 v0.2.0。
+`RhineLabWallpaper/` 中保留原项目历史文档和链接；本修改版的版本选择、权限和启动方法以当前 README 为准。v0.1.0 和 v0.2.0 属于旧的默认接入快照，新用户请使用 v0.2.1。

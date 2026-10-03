@@ -41,7 +41,7 @@ export function createLocalServer({root=fileURLToPath(new URL('../RhineLabWallpa
         if(req.method!=='GET'){json(res,405,{error:'method_not_allowed'});return;}
         res.writeHead(200,{...headers,'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"});res.end(accessPage(access.token));return;
       }
-      if(url.pathname==='/__rhine_health'){json(res,200,{app:'rhine-mac-local',edition:'local',version:'0.2.0',desktop_connected:!!access.root});return;}
+      if(url.pathname==='/__rhine_health'){json(res,200,{app:'rhine-mac-local',edition:'local',version:'0.2.1',desktop_connected:!!access.root});return;}
       if(url.pathname.startsWith('/api/')) {
         const service=url.pathname.split('/')[2];const enabled=service==='desktop'?!!access.root:access.flags[service];
         if(service!=='local' && !enabled){json(res,403,{error:'connection_disabled',code:'connection_disabled'});return;}
